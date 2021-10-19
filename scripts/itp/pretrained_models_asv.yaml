@@ -1,0 +1,159 @@
+description: PhillyTools ConfigFile for s3prl
+
+# AML 
+target:
+#  name: itpeastusv100cl
+#  name: itpwus2v100cl
+#  name: itplabrr1cl1
+#  name: itpseasiav100cl
+  name: itpscusv100cl
+#  name: itpeusp100cl
+#  name: itpeusp40cl
+  service: amlk8s
+  vc: resrchvc
+
+# docker environment
+environment:
+  image: sanyuanchen/s3prl_v2:latest
+
+# code dir
+code:
+  local_dir: .
+
+# job configuration  32 1e-4 1 1
+# amlt run .\scripts\itp\pretrained_models_asv.yaml pretrained_models_asv_bc_m_hubert_pretrain_large_from_scratch_sl12_90k_s375k_lr1e5 -y
+  # pt run .\scripts\itp\pretrained_models_asv.yaml sf_pretrained_models_asv_bc_hubert_pretrain_base_iter2_label_ctc7 -y
+  # pt run .\scripts\itp\pretrained_models_asv.yaml pretrained_cls_models_asv_sembed_hubert_pretrain_base_iter2_label_ctc7_fix2_lw1_concat -y
+
+  # amlt run .\scripts\itp\pretrained_models_asv.yaml pretrained_models_asv_WavLM-Large-More_lr2e5_190000_re -y
+  # amlt run .\scripts\itp\pretrained_models_asv.yaml pretrained_models_asv_WavLM-Large-More_lr5e5_sc -y
+jobs:
+  - name: training
+#    sku: G8
+    sku: G1
+    sku_count: 1
+    command:
+      # sce
+#      - bash scripts/itp/bash/pretrained_models_asv.sh hubert_models WavLM-Large-More 512 1e-4 1 _sanych_spk_hubert_large 140000 1
+#      - bash scripts/itp/bash/pretrained_models_asv.sh hubert_models WavLM-Large-More 512 1e-4 1 _sanych_spk_hubert_large 130000 1
+#      - bash scripts/itp/bash/pretrained_models_asv.sh hubert_models WavLM-Large-More 512 1e-4 1 _sanych_spk_hubert_large 120000 1
+#      - bash scripts/itp/bash/pretrained_models_asv.sh hubert_models WavLM-Large-More 512 1e-4 1 _sanych_spk_hubert_large 110000 1
+#      - bash scripts/itp/bash/pretrained_models_asv.sh hubert_models WavLM-Large-More 512 1e-4 1 _sanych_spk_hubert_large 100000 1
+#      - bash scripts/itp/bash/pretrained_models_asv.sh hubert_models WavLM-Large-More 512 1e-4 1 _sanych_spk_hubert_large 90000 1
+#      - bash scripts/itp/bash/pretrained_models_asv.sh hubert_models WavLM-Large-More 512 1e-4 1 _sanych_spk_hubert_large 80000 1
+#      - bash scripts/itp/bash/pretrained_models_asv.sh hubert_models WavLM-Large-More 512 1e-4 1 _sanych_spk_hubert_large 70000 1
+#      - bash scripts/itp/bash/pretrained_models_asv.sh hubert_models WavLM-Large-More 512 1e-4 1 _sanych_spk_hubert_large 60000 1
+#      - bash scripts/itp/bash/pretrained_models_asv.sh hubert_models WavLM-Large-More 512 1e-4 1 _sanych_spk_hubert_large 50000 1
+#      - bash scripts/itp/bash/pretrained_models_asv.sh hubert_models WavLM-Large-More 512 1e-4 1 _sanych_spk_hubert_large 40000 1
+#      - bash scripts/itp/bash/pretrained_models_asv.sh hubert_models WavLM-Large-More 512 1e-4 1 _sanych_spk_hubert_large 30000 1
+#      - bash scripts/itp/bash/pretrained_models_asv.sh hubert_models WavLM-Large-More 512 1e-4 1 _sanych_spk_hubert_large 20000 1
+#      - bash scripts/itp/bash/pretrained_models_asv.sh hubert_models WavLM-Large-More 512 1e-4 1 _sanych_spk_hubert_large 10000 1
+
+#      - bash scripts/itp/bash/pretrained_models_asv.sh hubert_models WavLM-Large-More 512 2e-5 1 _sanych_spk_hubert_large 200000 1
+#      - bash scripts/itp/bash/pretrained_models_asv.sh hubert_models WavLM-Large-More 512 2e-5 1 _sanych_spk_hubert_large 190000 1
+#      - bash scripts/itp/bash/pretrained_models_asv.sh hubert_models WavLM-Large-More 512 2e-5 1 _sanych_spk_hubert_large 180000 1
+#      - bash scripts/itp/bash/pretrained_models_asv.sh hubert_models WavLM-Large-More 512 2e-5 1 _sanych_spk_hubert_large 170000 1
+#      - bash scripts/itp/bash/pretrained_models_asv.sh hubert_models WavLM-Large-More 512 2e-5 1 _sanych_spk_hubert_large 160000 1
+#      - bash scripts/itp/bash/pretrained_models_asv.sh hubert_models WavLM-Large-More 512 2e-5 1 _sanych_spk_hubert_large 150000 1
+#      - bash scripts/itp/bash/pretrained_models_asv.sh hubert_models WavLM-Large-More 512 2e-5 1 _sanych_spk_hubert_large 140000 1
+#      - bash scripts/itp/bash/pretrained_models_asv.sh hubert_models WavLM-Large-More 512 2e-5 1 _sanych_spk_hubert_large 130000 1
+#      - bash scripts/itp/bash/pretrained_models_asv.sh hubert_models WavLM-Large-More 512 2e-5 1 _sanych_spk_hubert_large 120000 1
+#      - bash scripts/itp/bash/pretrained_models_asv.sh hubert_models WavLM-Large-More 512 2e-5 1 _sanych_spk_hubert_large 110000 1
+#      - bash scripts/itp/bash/pretrained_models_asv.sh hubert_models WavLM-Large-More 512 2e-5 1 _sanych_spk_hubert_large 100000 1
+#      - bash scripts/itp/bash/pretrained_models_asv.sh hubert_models WavLM-Large-More 512 2e-5 1 _sanych_spk_hubert_large 90000 1
+#      - bash scripts/itp/bash/pretrained_models_asv.sh hubert_models WavLM-Large-More 512 2e-5 1 _sanych_spk_hubert_large 80000 1
+#      - bash scripts/itp/bash/pretrained_models_asv.sh hubert_models WavLM-Large-More 512 2e-5 1 _sanych_spk_hubert_large 70000 1
+#      - bash scripts/itp/bash/pretrained_models_asv.sh hubert_models WavLM-Large-More 512 2e-5 1 _sanych_spk_hubert_large 60000 1
+#      - bash scripts/itp/bash/pretrained_models_asv.sh hubert_models WavLM-Large-More 512 2e-5 1 _sanych_spk_hubert_large 50000 1
+#      - bash scripts/itp/bash/pretrained_models_asv.sh hubert_models WavLM-Large-More 512 2e-5 1 _sanych_spk_hubert_large 40000 1
+#      - bash scripts/itp/bash/pretrained_models_asv.sh hubert_models WavLM-Large-More 512 2e-5 1 _sanych_spk_hubert_large 30000 1
+#      - bash scripts/itp/bash/pretrained_models_asv.sh hubert_models WavLM-Large-More 512 2e-5 1 _sanych_spk_hubert_large 20000 1
+#      - bash scripts/itp/bash/pretrained_models_asv.sh hubert_models WavLM-Large-More 512 2e-5 1 _sanych_spk_hubert_large 10000 1
+
+#      - bash scripts/itp/bash/pretrained_models_asv.sh hubert_models WavLM-Large-More 512 5e-5 1 _sanych_spk_hubert_large 200000 1
+#      - bash scripts/itp/bash/pretrained_models_asv.sh hubert_models WavLM-Large-More 512 5e-5 1 _sanych_spk_hubert_large 190000 1
+#      - bash scripts/itp/bash/pretrained_models_asv.sh hubert_models WavLM-Large-More 512 5e-5 1 _sanych_spk_hubert_large 180000 1
+      - bash scripts/itp/bash/pretrained_models_asv.sh hubert_models WavLM-Large-More 512 5e-5 1 _sanych_spk_hubert_large 170000 1
+#      - bash scripts/itp/bash/pretrained_models_asv.sh hubert_models WavLM-Large-More 512 5e-5 1 _sanych_spk_hubert_large 160000 1
+#      - bash scripts/itp/bash/pretrained_models_asv.sh hubert_models WavLM-Large-More 512 5e-5 1 _sanych_spk_hubert_large 150000 1
+#      - bash scripts/itp/bash/pretrained_models_asv.sh hubert_models WavLM-Large-More 512 5e-5 1 _sanych_spk_hubert_large 140000 1
+#      - bash scripts/itp/bash/pretrained_models_asv.sh hubert_models WavLM-Large-More 512 5e-5 1 _sanych_spk_hubert_large 130000 1
+#      - bash scripts/itp/bash/pretrained_models_asv.sh hubert_models WavLM-Large-More 512 5e-5 1 _sanych_spk_hubert_large 120000 1
+#      - bash scripts/itp/bash/pretrained_models_asv.sh hubert_models WavLM-Large-More 512 5e-5 1 _sanych_spk_hubert_large 110000 1
+#      - bash scripts/itp/bash/pretrained_models_asv.sh hubert_models WavLM-Large-More 512 5e-5 1 _sanych_spk_hubert_large 100000 1
+#      - bash scripts/itp/bash/pretrained_models_asv.sh hubert_models WavLM-Large-More 512 5e-5 1 _sanych_spk_hubert_large 90000 1
+#      - bash scripts/itp/bash/pretrained_models_asv.sh hubert_models WavLM-Large-More 512 5e-5 1 _sanych_spk_hubert_large 80000 1
+#      - bash scripts/itp/bash/pretrained_models_asv.sh hubert_models WavLM-Large-More 512 5e-5 1 _sanych_spk_hubert_large 70000 1
+#      - bash scripts/itp/bash/pretrained_models_asv.sh hubert_models WavLM-Large-More 512 5e-5 1 _sanych_spk_hubert_large 60000 1
+#      - bash scripts/itp/bash/pretrained_models_asv.sh hubert_models WavLM-Large-More 512 5e-5 1 _sanych_spk_hubert_large 50000 1
+#      - bash scripts/itp/bash/pretrained_models_asv.sh hubert_models WavLM-Large-More 512 5e-5 1 _sanych_spk_hubert_large 40000 1
+#      - bash scripts/itp/bash/pretrained_models_asv.sh hubert_models WavLM-Large-More 512 5e-5 1 _sanych_spk_hubert_large 30000 1
+#      - bash scripts/itp/bash/pretrained_models_asv.sh hubert_models WavLM-Large-More 512 5e-5 1 _sanych_spk_hubert_large 20000 1
+#      - bash scripts/itp/bash/pretrained_models_asv.sh hubert_models WavLM-Large-More 512 5e-5 1 _sanych_spk_hubert_large 10000 1
+
+#      - bash scripts/itp/bash/pretrained_models_asv.sh hubert_models WavLM-Large 512 2e-5 1 _sanych_spk_hubert_large 200000 1
+#      - bash scripts/itp/bash/pretrained_models_asv.sh hubert_models WavLM-Large 512 2e-5 1 _sanych_spk_hubert_large 190000 1
+#      - bash scripts/itp/bash/pretrained_models_asv.sh hubert_models WavLM-Large 512 2e-5 1 _sanych_spk_hubert_large 180000 1
+#      - bash scripts/itp/bash/pretrained_models_asv.sh hubert_models WavLM-Large 512 2e-5 1 _sanych_spk_hubert_large 170000 1
+#      - bash scripts/itp/bash/pretrained_models_asv.sh hubert_models WavLM-Large 512 2e-5 1 _sanych_spk_hubert_large 160000 1
+#      - bash scripts/itp/bash/pretrained_models_asv.sh hubert_models WavLM-Large 512 2e-5 1 _sanych_spk_hubert_large 150000 1
+#      - bash scripts/itp/bash/pretrained_models_asv.sh hubert_models WavLM-Large 512 2e-5 1 _sanych_spk_hubert_large 140000 1
+#      - bash scripts/itp/bash/pretrained_models_asv.sh hubert_models WavLM-Large 512 2e-5 1 _sanych_spk_hubert_large 130000 1
+#      - bash scripts/itp/bash/pretrained_models_asv.sh hubert_models WavLM-Large 512 2e-5 1 _sanych_spk_hubert_large 120000 1
+#      - bash scripts/itp/bash/pretrained_models_asv.sh hubert_models WavLM-Large 512 2e-5 1 _sanych_spk_hubert_large 110000 1
+#      - bash scripts/itp/bash/pretrained_models_asv.sh hubert_models WavLM-Large 512 2e-5 1 _sanych_spk_hubert_large 100000 1
+#      - bash scripts/itp/bash/pretrained_models_asv.sh hubert_models WavLM-Large 512 2e-5 1 _sanych_spk_hubert_large 90000 1
+#      - bash scripts/itp/bash/pretrained_models_asv.sh hubert_models WavLM-Large 512 2e-5 1 _sanych_spk_hubert_large 80000 1
+#      - bash scripts/itp/bash/pretrained_models_asv.sh hubert_models WavLM-Large 512 2e-5 1 _sanych_spk_hubert_large 70000 1
+#      - bash scripts/itp/bash/pretrained_models_asv.sh hubert_models WavLM-Large 512 2e-5 1 _sanych_spk_hubert_large 60000 1
+#      - bash scripts/itp/bash/pretrained_models_asv.sh hubert_models WavLM-Large 512 2e-5 1 _sanych_spk_hubert_large 50000 1
+#      - bash scripts/itp/bash/pretrained_models_asv.sh hubert_models WavLM-Large 512 2e-5 1 _sanych_spk_hubert_large 40000 1
+#      - bash scripts/itp/bash/pretrained_models_asv.sh hubert_models WavLM-Large 512 2e-5 1 _sanych_spk_hubert_large 30000 1
+#      - bash scripts/itp/bash/pretrained_models_asv.sh hubert_models WavLM-Large 512 2e-5 1 _sanych_spk_hubert_large 20000 1
+#      - bash scripts/itp/bash/pretrained_models_asv.sh hubert_models WavLM-Large 512 2e-5 1 _sanych_spk_hubert_large 10000 1
+
+#      - bash scripts/itp/bash/pretrained_models_asv.sh hubert_models WavLM-Large 512 5e-5 1 _sanych_spk_hubert_large 200000 1
+#      - bash scripts/itp/bash/pretrained_models_asv.sh hubert_models WavLM-Large 512 5e-5 1 _sanych_spk_hubert_large 190000 1
+#      - bash scripts/itp/bash/pretrained_models_asv.sh hubert_models WavLM-Large 512 5e-5 1 _sanych_spk_hubert_large 180000 1
+#      - bash scripts/itp/bash/pretrained_models_asv.sh hubert_models WavLM-Large 512 5e-5 1 _sanych_spk_hubert_large 170000 1
+#      - bash scripts/itp/bash/pretrained_models_asv.sh hubert_models WavLM-Large 512 5e-5 1 _sanych_spk_hubert_large 160000 1
+#      - bash scripts/itp/bash/pretrained_models_asv.sh hubert_models WavLM-Large 512 5e-5 1 _sanych_spk_hubert_large 150000 1
+#      - bash scripts/itp/bash/pretrained_models_asv.sh hubert_models WavLM-Large 512 5e-5 1 _sanych_spk_hubert_large 10000 1
+#      - bash scripts/itp/bash/pretrained_models_asv.sh hubert_models WavLM-Large 512 5e-5 1 _sanych_spk_hubert_large 20000 1
+#      - bash scripts/itp/bash/pretrained_models_asv.sh hubert_models WavLM-Large 512 5e-5 1 _sanych_spk_hubert_large 30000 1
+#      - bash scripts/itp/bash/pretrained_models_asv.sh hubert_models WavLM-Large 512 5e-5 1 _sanych_spk_hubert_large 40000 1
+#      - bash scripts/itp/bash/pretrained_models_asv.sh hubert_models WavLM-Large 512 5e-5 1 _sanych_spk_hubert_large 50000 1
+#      - bash scripts/itp/bash/pretrained_models_asv.sh hubert_models WavLM-Large 512 5e-5 1 _sanych_spk_hubert_large 60000 1
+#      - bash scripts/itp/bash/pretrained_models_asv.sh hubert_models WavLM-Large 512 5e-5 1 _sanych_spk_hubert_large 70000 1
+#      - bash scripts/itp/bash/pretrained_models_asv.sh hubert_models WavLM-Large 512 5e-5 1 _sanych_spk_hubert_large 80000 1
+#      - bash scripts/itp/bash/pretrained_models_asv.sh hubert_models WavLM-Large 512 5e-5 1 _sanych_spk_hubert_large 90000 1
+#      - bash scripts/itp/bash/pretrained_models_asv.sh hubert_models WavLM-Large 512 5e-5 1 _sanych_spk_hubert_large 100000 1
+#      - bash scripts/itp/bash/pretrained_models_asv.sh hubert_models WavLM-Large 512 5e-5 1 _sanych_spk_hubert_large 110000 1
+#      - bash scripts/itp/bash/pretrained_models_asv.sh hubert_models WavLM-Large 512 5e-5 1 _sanych_spk_hubert_large 120000 1
+#      - bash scripts/itp/bash/pretrained_models_asv.sh hubert_models WavLM-Large 512 5e-5 1 _sanych_spk_hubert_large 130000 1
+#      - bash scripts/itp/bash/pretrained_models_asv.sh hubert_models WavLM-Large 512 5e-5 1 _sanych_spk_hubert_large 140000 1
+#      - bash scripts/itp/bash/pretrained_models_asv.sh hubert_models WavLM-Base-Plus 512 5e-5 1 _sanych_spk_hubert_large 190000 2
+#      - bash scripts/itp/bash/pretrained_models_asv.sh hubert_models WavLM-Base-Plus 512 1e-4 1 _sanych_spk_hubert_large 120000 2
+#      - bash scripts/itp/bash/pretrained_models_asv.sh hubert_models WavLM-Base 512 5e-5 1 _sanych_spk_hubert_large 200000 2
+#      - bash scripts/itp/bash/pretrained_models_asv.sh hubert_models UniSpeech-SAT-Base-plus 512 1e-4 1 _sanych_spk_hubert_large 140000 2
+#      - sleep infinity
+
+# azure blob configuration
+storage:
+  data_blob:
+    container_name: models
+    mount_dir: /datablob
+    storage_account_name: tsstd01eus
+#    storage_account_name: tsstd01scus
+#    storage_account_name: tsstd01wus2
+    mount_options:
+      - -o
+      - attr_timeout=240
+      - -o
+      - entry_timeout=240
+      - -o
+      - negative_timeout=120
+      - -o
+      - allow_other
+      - --log-level=LOG_WARNING
+      - --file-cache-timeout-in-seconds=3600

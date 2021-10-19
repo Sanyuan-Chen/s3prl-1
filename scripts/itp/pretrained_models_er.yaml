@@ -1,0 +1,52 @@
+description: PhillyTools ConfigFile for s3prl
+
+# AML 
+target:
+#  name: itpeastusv100cl
+#  name: itpeusp100cl
+  name: itpeusp40cl
+  service: amlk8s
+  vc: resrchvc
+
+# docker environment
+environment:
+  image: sanyuanchen/s3prl_v2:latest
+
+# code dir
+code:
+  local_dir: .
+
+# job configuration bs_hubert_pretrain_base_iter2_mw1_0_uw0_0_mn1_mmr09_mmspan
+  # amlt run .\scripts\itp\pretrained_models_er.yaml pretrained_models_er_mn_hubert_pretrain_large_94k_mnp0_mp02_grep_700k_615kstep_b32_1e3_1_f1 -y
+  # amlt run .\scripts\itp\pretrained_models_er.yaml sf_pretrained_models_er_bc_hubert_pretrain_base_iter2_32_1e3_1_f1 -y
+
+  # amlt run .\scripts\itp\pretrained_models_er.yaml pretrained_models_er_WavLM-Large-More -y
+jobs:
+  - name: training
+    sku: G1
+#    sku: G1
+    sku_count: 1
+    command:
+      - bash scripts/itp/bash/pretrained_models_er.sh hubert_models WavLM-Large-More 32 1e-5 1 5 _sanych_spk_hubert_large
+#      - bash scripts/itp/bash/pretrained_models_er.sh hubert_models WavLM-Large 32 1e-5 1 5 _sanych_spk_hubert_large
+#      - bash scripts/itp/bash/pretrained_models_er.sh hubert_models WavLM-Base-Plus 32 1e-4 1 5 _sanych_spk_hubert_large
+#      - bash scripts/itp/bash/pretrained_models_er.sh hubert_models WavLM-Base 32 1e-4 1 5 _sanych_spk_hubert_large
+#      - bash scripts/itp/bash/pretrained_models_er.sh hubert_models UniSpeech-SAT-Base-plus 32 5e-5 1 5 _sanych_spk_hubert_large
+
+# azure blob configuration
+storage:
+  data_blob:
+    container_name: models
+    mount_dir: /datablob
+    storage_account_name: tsstd01eus
+    mount_options:
+      - -o
+      - attr_timeout=240
+      - -o
+      - entry_timeout=240
+      - -o
+      - negative_timeout=120
+      - -o
+      - allow_other
+      - --log-level=LOG_WARNING
+      - --file-cache-timeout-in-seconds=3600

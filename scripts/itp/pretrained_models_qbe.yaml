@@ -1,0 +1,48 @@
+description: PhillyTools ConfigFile for s3prl
+
+# AML 
+target:
+#  name: itpeastusv100cl
+#  name: itpeusp100cl
+  name: itpeusp40cl
+  service: amlk8s
+  vc: resrchvc
+
+# docker environment
+environment:
+  image: sanyuanchen/s3prl_v2:latest
+
+# code dir
+code:
+  local_dir: .
+
+# job configuration
+  # amlt run .\scripts\itp\pretrained_models_qbe.yaml pretrained_models_qbe_WavLM-Base-Plus -y
+  # pt run .\scripts\itp\pretrained_models_qbe.yaml pretrained_cls_models_qbe_slabel_hubert_pretrain_base_iter2_label_ctc7_fix2 -y
+jobs:
+  - name: training
+#    sku: G4 bc_m_hubert_pretrain_base_iter2_90k
+    sku: G1
+    sku_count: 1
+    command:
+      - bash scripts/itp/bash/pretrained_models_qbe.sh hubert_models WavLM-Base-Plus _sanych_spk_hubert_large
+      - bash scripts/itp/bash/pretrained_models_qbe.sh hubert_models WavLM-Base _sanych_spk_hubert_large
+      - bash scripts/itp/bash/pretrained_models_qbe.sh hubert_models UniSpeech-SAT-Base-plus _sanych_spk_hubert_large
+
+# azure blob configuration
+storage:
+  data_blob:
+    container_name: models
+    mount_dir: /datablob
+    storage_account_name: tsstd01eus
+    mount_options:
+      - -o
+      - attr_timeout=240
+      - -o
+      - entry_timeout=240
+      - -o
+      - negative_timeout=120
+      - -o
+      - allow_other
+      - --log-level=LOG_WARNING
+      - --file-cache-timeout-in-seconds=3600

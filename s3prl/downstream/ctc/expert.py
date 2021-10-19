@@ -96,6 +96,7 @@ class DownstreamExpert(nn.Module):
             filtered_tokens.append(filtered_token)
 
         hypothesis = [
+            # self.tokenizer.decode(h, ignore_repeat=True) for h in pred_tokens
             self.tokenizer.decode(h, ignore_repeat=True) for h in filtered_tokens
         ]
         groundtruth = [self.tokenizer.decode(g.tolist()) for g in labels]

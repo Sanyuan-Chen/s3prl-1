@@ -43,6 +43,10 @@ class UpstreamExpert(UpstreamBase):
             [ckpt]
         )
         self.model = model[0]
+        if len(self.model.encoder.layers) >= 24 and hasattr(self.model.encoder.layers[23].self_attn, "fp32_attention"):
+            self.model.encoder.layers[23].self_attn.fp32_attention = False
+        if len(self.model.encoder.layers) >= 12 and hasattr(self.model.encoder.layers[11].self_attn, "fp32_attention"):
+            self.model.encoder.layers[11].self_attn.fp32_attention = False
         self.task = task
 
         if len(self.hooks) == 0:

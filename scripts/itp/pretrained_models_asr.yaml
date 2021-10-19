@@ -1,0 +1,88 @@
+description: PhillyTools ConfigFile for s3prl
+
+# AML 
+target:
+#  name: itpeastusv100cl
+#  name: itpeusp100cl
+  name: itpeusp40cl
+#  name: itpscusv100cl
+#  name: itplabrr1cl1
+#  name: itp-p40-eus-01
+  service: amlk8s
+  vc: resrchvc
+#  vc: speech-itp-default
+
+# docker environment
+environment:
+#  image: sanyuanchen/s3prl_v2:latest
+  image: sanyuanchen/s3prl_devel:latest
+
+# code dir
+code:
+  local_dir: .
+
+# job configuration
+  # amlt run .\scripts\itp\pretrained_models_asr.yaml pretrained_models_asr_bc_m_hubert_pretrain_large_from_scratch_sl12_90k_s375k_lr5e4 -y
+  # pt run .\scripts\itp\pretrained_models_asr.yaml pretrained_cls_models_asr_sembed_hubert_pretrain_base_iter2_label_ctc7_fix2_lw1 -y
+
+  # amlt run .\scripts\itp\pretrained_models_asr.yaml pretrained_models_asr_UniSpeech-SAT-Base-plus -y
+  # amlt run .\scripts\itp\pretrained_models_asr.yaml pretrained_models_asr_mn_hubert_pretrain_large_94k_mnp0_mp02_grep_700k_615kstep_lr1e4_re5_wu3_p40 -y
+jobs:
+  - name: training
+#    sku: G4
+    sku: G1
+    sku_count: 1
+    command:
+#      # sc g8
+#      - bash scripts/itp/bash/pretrained_models_asr.sh hubert_models mn_hubert_pretrain_large_94k_mnp0_mp02_grep_700k_600kstep_conti_620 128 7e-5 1 _sanych_spk_hubert_large 16
+#      - bash scripts/itp/bash/pretrained_models_asr.sh hubert_models mn_hubert_pretrain_large_94k_mnp0_mp02_grep_700k_600kstep_conti_620 128 4e-4 1 _sanych_spk_hubert_large 16
+#      - bash scripts/itp/bash/pretrained_models_asr.sh hubert_models mn_hubert_pretrain_large_94k_mnp0_mp02_grep_700k_615kstep 128 1e-4 1 _sanych_spk_hubert_large 16
+#      - bash scripts/itp/bash/pretrained_models_asr.sh hubert_models mn_hubert_pretrain_large_94k_mnp0_mp02_grep_700k_615kstep 128 5e-5 1 _sanych_spk_hubert_large 16
+#      - bash scripts/itp/bash/pretrained_models_asr.sh hubert_models mn_hubert_pretrain_large_94k_mnp0_mp02_grep_700k_615kstep 128 6e-5 1 _sanych_spk_hubert_large 16
+
+      # wu g8
+#      - bash scripts/itp/bash/pretrained_models_asr.sh hubert_models mn_hubert_pretrain_large_94k_mnp0_mp02_grep_700k_600kstep_conti_620 128 8e-5 1 _sanych_spk_hubert_large 16
+#      - bash scripts/itp/bash/pretrained_models_asr.sh hubert_models mn_hubert_pretrain_large_94k_mnp0_mp02_grep_700k_600kstep_conti_620 128 7e-5 1 _sanych_spk_hubert_large 16
+#      - bash scripts/itp/bash/pretrained_models_asr.sh hubert_models mn_hubert_pretrain_large_94k_mnp0_mp02_grep_700k_600kstep_conti_620 128 3e-4 1 _sanych_spk_hubert_large 16
+#      - bash scripts/itp/bash/pretrained_models_asr.sh hubert_models mn_hubert_pretrain_large_94k_mnp0_mp02_grep_700k_600kstep_conti_620 128 5e-4 1 _sanych_spk_hubert_large 16
+#      - bash scripts/itp/bash/pretrained_models_asr.sh hubert_models mn_hubert_pretrain_large_94k_mnp0_mp02_grep_700k_600kstep_conti_620 128 5e-5 1 _sanych_spk_hubert_large 16
+#      - bash scripts/itp/bash/pretrained_models_asr.sh hubert_models mn_hubert_pretrain_large_94k_mnp0_mp02_grep_700k_600kstep_conti_620 128 2e-4 1 _sanych_spk_hubert_large 16
+#      - bash scripts/itp/bash/pretrained_models_asr.sh hubert_models mn_hubert_pretrain_large_94k_mnp0_mp02_grep_700k_600kstep_conti_620 128 1e-4 1 _sanych_spk_hubert_large 16
+      - bash scripts/itp/bash/pretrained_models_asr.sh hubert_models mn_hubert_pretrain_large_94k_mnp0_mp02_grep_700k_615kstep 128 6e-5 1 _sanych_spk_hubert_large 16
+      - bash scripts/itp/bash/pretrained_models_asr.sh hubert_models mn_hubert_pretrain_large_94k_mnp0_mp02_grep_700k_615kstep 128 7e-5 1 _sanych_spk_hubert_large 16
+      - bash scripts/itp/bash/pretrained_models_asr.sh hubert_models mn_hubert_pretrain_large_94k_mnp0_mp02_grep_700k_615kstep 128 8e-5 1 _sanych_spk_hubert_large 16
+      - bash scripts/itp/bash/pretrained_models_asr.sh hubert_models mn_hubert_pretrain_large_94k_mnp0_mp02_grep_700k_615kstep 128 9e-5 1 _sanych_spk_hubert_large 16
+      - bash scripts/itp/bash/pretrained_models_asr.sh hubert_models mn_hubert_pretrain_large_94k_mnp0_mp02_grep_700k_615kstep 128 4e-4 1 _sanych_spk_hubert_large 16
+      - bash scripts/itp/bash/pretrained_models_asr.sh hubert_models mn_hubert_pretrain_large_94k_mnp0_mp02_grep_700k_615kstep 128 3e-4 1 _sanych_spk_hubert_large 16
+      - bash scripts/itp/bash/pretrained_models_asr.sh hubert_models mn_hubert_pretrain_large_94k_mnp0_mp02_grep_700k_615kstep 128 5e-4 1 _sanych_spk_hubert_large 16
+      - bash scripts/itp/bash/pretrained_models_asr.sh hubert_models mn_hubert_pretrain_large_94k_mnp0_mp02_grep_700k_615kstep 128 5e-5 1 _sanych_spk_hubert_large 16
+      - bash scripts/itp/bash/pretrained_models_asr.sh hubert_models mn_hubert_pretrain_large_94k_mnp0_mp02_grep_700k_615kstep 128 2e-4 1 _sanych_spk_hubert_large 16
+      - bash scripts/itp/bash/pretrained_models_asr.sh hubert_models mn_hubert_pretrain_large_94k_mnp0_mp02_grep_700k_615kstep 128 1e-4 1 _sanych_spk_hubert_large 16
+      - bash scripts/itp/bash/pretrained_models_asr.sh hubert_models mn_hubert_pretrain_large_94k_mnp0_mp02_grep_700k_610kstep 128 1e-4 1 _sanych_spk_hubert_large 16
+
+
+#      - bash scripts/itp/bash/pretrained_models_asr.sh hubert_models WavLM-Large 128 2e-4 1 _sanych_spk_hubert_large 16
+#      - bash scripts/itp/bash/pretrained_models_asr.sh hubert_models WavLM-Base-Plus 128 2e-4 1 _sanych_spk_hubert_large 32
+#      - bash scripts/itp/bash/pretrained_models_asr.sh hubert_models WavLM-Base 128 5e-4 1 _sanych_spk_hubert_large 32
+#      - bash scripts/itp/bash/pretrained_models_asr.sh hubert_models UniSpeech-SAT-Base-plus 128 1e-4 1 _sanych_spk_hubert_large 32
+#      - sleep infinity
+
+# azure blob configuration
+storage:
+  data_blob:
+    container_name: models
+    mount_dir: /datablob
+#    storage_account_name: tsstd01eus
+#    storage_account_name: tsstd01scus
+    storage_account_name: tsstd01wus2
+    mount_options:
+      - -o
+      - attr_timeout=240
+      - -o
+      - entry_timeout=240
+      - -o
+      - negative_timeout=120
+      - -o
+      - allow_other
+      - --log-level=LOG_WARNING
+      - --file-cache-timeout-in-seconds=3600
