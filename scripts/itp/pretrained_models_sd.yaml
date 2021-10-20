@@ -4,8 +4,8 @@ description: PhillyTools ConfigFile for s3prl
 target:
 #  name: itpeastusv100cl
 #  name: itpeusp100cl
-#  name: itpscusv100cl
-  name: itpeusp40cl
+  name: itpscusv100cl
+#  name: itpeusp40cl
 #  name: itp-p40-eus-01
   service: amlk8s
   vc: resrchvc
@@ -13,37 +13,32 @@ target:
 
 # docker environment
 environment:
-  image: sanyuanchen/s3prl_v2:latest
+  image: sanyuanchen/s3prl_v2:s3prl_v2
 
 # code dir
 code:
   local_dir: .
 
 # job configuration
-  # pt run .\scripts\itp\pretrained_models_sd.yaml pretrained_models_sd_WavLM-Large -y
-  # pt run .\scripts\itp\pretrained_models_sd.yaml pretrained_cls_models_sd_sembed_hubert_pretrain_base_iter2_label_ctc7_fix2_lw1_add_a -y
-  # pt run .\scripts\itp\pretrained_models_sd.yaml sf_pretrained_models_sd_bc_hubert_pretrain_base_iter2_label_ctc7 -y
+  # amlt run .\scripts\itp\pretrained_models_sd.yaml pretrained_models_sd_mn_hubert_pretrain_base_iter3_94k_mnp0_mp02_grep_1200kstep_1025k_lr1e3_sc4 -y
 
   # amlt run .\scripts\itp\pretrained_models_sd.yaml pretrained_models_sd_WavLM-Large-More -y
 jobs:
   - name: training
-#    sku: G4
-    sku: G1
+    sku: G4
+#    sku: G1
     sku_count: 1
     command:
-      - bash scripts/itp/bash/pretrained_models_sd.sh hubert_models WavLM-Large-More 256 5e-3 4 _sanych_spk_hubert_large
-#      - bash scripts/itp/bash/pretrained_models_sd.sh hubert_models WavLM-Large 256 5e-3 4 _sanych_spk_hubert_large
-#      - bash scripts/itp/bash/pretrained_models_sd.sh hubert_models WavLM-Base-Plus 256 2e-3 4 _sanych_spk_hubert_large
-#      - bash scripts/itp/bash/pretrained_models_sd.sh hubert_models WavLM-Base 256 1e-3 4 _sanych_spk_hubert_large
-#      - bash scripts/itp/bash/pretrained_models_sd.sh hubert_models UniSpeech-SAT-Base-plus 256 1e-3 4 _sanych_spk_hubert_large
+      - bash scripts/itp/bash/pretrained_models_sd.sh hubert_models mn_hubert_pretrain_base_iter3_94k_mnp0_mp02_grep_1200kstep_1025k 256 1e-3 4 4
+      - sleep infinity
 
 # azure blob configuration
 storage:
   data_blob:
     container_name: models
     mount_dir: /datablob
-    storage_account_name: tsstd01eus
-#    storage_account_name: tsstd01scus
+#    storage_account_name: tsstd01eus
+    storage_account_name: tsstd01scus
 #    storage_account_name: tsstd01wus2
     mount_options:
       - -o

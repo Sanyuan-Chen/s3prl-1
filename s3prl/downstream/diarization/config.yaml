@@ -27,9 +27,9 @@ downstream_expert:
     num_workers: 8
     train_batchsize: 8
     eval_batchsize: 1
-    train_dir: ./downstream/diarization/data/train
-    dev_dir: ./downstream/diarization/data/dev
-    test_dir: ./downstream/diarization/data/test
+    train_dir: /datablob/users/v-sanych/s3prl_data/diarization/train
+    dev_dir: /datablob/users/v-sanych/s3prl_data/diarization/dev
+    test_dir: /datablob/users/v-sanych/s3prl_data/diarization/test
 
   scorerc:
     save_predictions: True
