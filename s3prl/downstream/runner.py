@@ -1,6 +1,7 @@
 import os
 import sys
 import math
+import time
 import glob
 import uuid
 import shutil
@@ -94,6 +95,7 @@ class Runner():
         self.upstream = self._get_upstream()
         self.featurizer = self._get_featurizer()
         self.downstream = self._get_downstream()
+        show(f'[Runner] - downstream {self.downstream.model}')
         self.all_entries = [self.upstream, self.featurizer, self.downstream]
 
 
@@ -240,7 +242,7 @@ class Runner():
             specaug = SpecAug(**self.config["specaug"])
 
         # progress bar
-        tqdm_file = sys.stderr if is_leader_process() else open(os.devnull, 'w')
+        tqdm_file = open('tqdm_print.txt', 'w') if is_leader_process() else open(os.devnull, 'w')
         pbar = tqdm(total=self.config['runner']['total_steps'], dynamic_ncols=True, desc='overall', file=tqdm_file)
         init_step = self.init_ckpt.get('Step')
         if init_step:
@@ -383,7 +385,7 @@ class Runner():
                         all_states['WorldSize'] = get_world_size()
 
                     save_paths = [os.path.join(self.args.expdir, name) for name in save_names]
-                    tqdm.write(f'[Runner] - Save the checkpoint to:')
+                    tqdm.write(f'{time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())} [Runner] - Save the checkpoint to:')
                     for i, path in enumerate(save_paths):
                         tqdm.write(f'{i + 1}. {path}')
                         torch.save(all_states, path)
@@ -429,7 +431,8 @@ class Runner():
 
         batch_ids = []
         records = defaultdict(list)
-        for batch_id, (wavs, *others) in enumerate(tqdm(dataloader, dynamic_ncols=True, desc=split)):
+        tqdm_file = open('tqdm_print_eval.txt', 'w')
+        for batch_id, (wavs, *others) in enumerate(tqdm(dataloader, dynamic_ncols=True, desc=split, file=tqdm_file)):
 
             wavs = [torch.FloatTensor(wav).to(self.args.device) for wav in wavs]
             with torch.no_grad():
