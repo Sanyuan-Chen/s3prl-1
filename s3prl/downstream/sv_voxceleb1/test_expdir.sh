@@ -20,7 +20,7 @@ if [ ! -d "$voxceleb1" ]; then
 fi
 
 echo "Start testing ckpts..."
-for state_name in 20000 40000 60000 80000 100000 120000 140000 160000 180000 200000;
+for state_name in 20000 40000 60000 80000 100000 120000 140000 160000 180000 200000 10000 30000 50000 70000 90000 110000 130000 150000 170000 190000;
 do
     ckpt_path="$expdir/states-$state_name.ckpt"
     echo "Testing $ckpt_path"

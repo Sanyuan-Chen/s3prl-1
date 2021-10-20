@@ -10,24 +10,21 @@ target:
 
 # docker environment
 environment:
-  image: sanyuanchen/s3prl_v2:latest
+  image: sanyuanchen/s3prl_v2:s3prl_v2
 
 # code dir
 code:
   local_dir: .
 
 # job configuration
-  # amlt run .\scripts\itp\pretrained_models_qbe.yaml pretrained_models_qbe_WavLM-Base-Plus -y
+  # amlt run .\scripts\itp\pretrained_models_qbe.yaml pretrained_models_qbe_mn_hubert_pretrain_base_iter3_94k_mnp0_mp02_grep_1200kstep_1025k -y
   # pt run .\scripts\itp\pretrained_models_qbe.yaml pretrained_cls_models_qbe_slabel_hubert_pretrain_base_iter2_label_ctc7_fix2 -y
 jobs:
   - name: training
-#    sku: G4 bc_m_hubert_pretrain_base_iter2_90k
     sku: G1
     sku_count: 1
     command:
-      - bash scripts/itp/bash/pretrained_models_qbe.sh hubert_models WavLM-Base-Plus _sanych_spk_hubert_large
-      - bash scripts/itp/bash/pretrained_models_qbe.sh hubert_models WavLM-Base _sanych_spk_hubert_large
-      - bash scripts/itp/bash/pretrained_models_qbe.sh hubert_models UniSpeech-SAT-Base-plus _sanych_spk_hubert_large
+      - bash scripts/itp/bash/pretrained_models_qbe.sh hubert_models mn_hubert_pretrain_base_iter3_94k_mnp0_mp02_grep_1200kstep_1025k
 
 # azure blob configuration
 storage:

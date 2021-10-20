@@ -13,28 +13,21 @@ target:
 
 # docker environment
 environment:
-  image: sanyuanchen/s3prl_v2:latest
+  image: sanyuanchen/s3prl_v2:s3prl_v2
 
 # code dir
 code:
   local_dir: .
 
 # job configuration
-  # pt run .\scripts\itp\pretrained_models_sf.yaml pretrained_models_sf_WavLM-Large -y
-  # pt run .\scripts\itp\pretrained_models_sf.yaml pretrained_cls_models_sf_sembed_hubert_pretrain_base_iter2_label_ctc7_fix2_lw1 -y
-  # amlt run .\scripts\itp\pretrained_models_sf.yaml pretrained_models_sf_WavLM-Large-More -y
+  # amlt run .\scripts\itp\pretrained_models_sf.yaml pretrained_models_sf_mn_hubert_pretrain_base_iter3_94k_mnp0_mp02_grep_1200kstep_1025k -y
 jobs:
   - name: training
-#    sku: G4
-    sku: G1
+    sku: G4
+#    sku: G1
     sku_count: 1
     command:
-      - bash scripts/itp/bash/pretrained_models_sf.sh hubert_models WavLM-Large-More 128 1e-4 1 _sanych_spk_hubert_large
-#      - bash scripts/itp/bash/pretrained_models_sf.sh hubert_models WavLM-Large 128 1e-4 1 _sanych_spk_hubert_large
-#      - bash scripts/itp/bash/pretrained_models_sf.sh hubert_models WavLM-Base-Plus 128 2e-4 1 _sanych_spk_hubert_large
-#      - bash scripts/itp/bash/pretrained_models_sf.sh hubert_models WavLM-Base-Plus 128 1e-4 1 _sanych_spk_hubert_large
-#      - bash scripts/itp/bash/pretrained_models_sf.sh hubert_models WavLM-Base 128 2e-4 1 _sanych_spk_hubert_large
-#      - bash scripts/itp/bash/pretrained_models_sf.sh hubert_models UniSpeech-SAT-Base-plus 128 1e-4 1 _sanych_spk_hubert_large
+      - bash scripts/itp/bash/pretrained_models_sf.sh hubert_models mn_hubert_pretrain_base_iter3_94k_mnp0_mp02_grep_1200kstep_1025k 128 1e-4 1 4
 
 # azure blob configuration
 storage:

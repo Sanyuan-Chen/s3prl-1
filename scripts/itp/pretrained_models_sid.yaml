@@ -4,39 +4,32 @@ description: PhillyTools ConfigFile for s3prl
 target:
 #  name: itpeastusv100cl
 #  name: itplabrr1cl1
-#  name: itpscusv100cl
+  name: itpscusv100cl
 #  name: itpseasiav100cl
 #  name: itpwus2v100cl
 #  name: itpeusp100cl
-  name: itpeusp40cl
+#  name: itpeusp40cl
   service: amlk8s
   vc: resrchvc
 
 # docker environment
 environment:
-  image: sanyuanchen/s3prl_v2:latest
+  image: sanyuanchen/s3prl_v2:s3prl_v2
 
 # code dir
 code:
   local_dir: .
 
 # job configuration
-  # amlt run .\scripts\itp\pretrained_models_sid.yaml pretrained_models_sid_WavLM-Large-More_lr2e1 -y
-  # pt run .\scripts\itp\pretrained_models_sid.yaml pretrained_cls_models_sid_sembed_hubert_pretrain_base_iter2_label_ctc7_fix2_lw1_add -y
-  # pt run .\scripts\itp\pretrained_models_sid.yaml fs_pretrained_models_sid_bc_hubert_pretrain_base_iter2_label_ctc7 -y
+  # amlt run .\scripts\itp\pretrained_models_sid.yaml pretrained_models_sid_mn_hubert_pretrain_base_iter3_94k_mnp0_mp02_grep_1200kstep_1025k_lr1e1 -y
 
 jobs:
   - name: training
-#    sku: G8
-    sku: G1
+    sku: G8
+#    sku: G1
     sku_count: 1
     command:
-      - bash scripts/itp/bash/pretrained_models_sid.sh hubert_models WavLM-Large-More 512 2e-1 1 _sanych_spk_hubert_large
-#      - bash scripts/itp/bash/pretrained_models_sid.sh hubert_models WavLM-Large-More 512 5e-2 1 _sanych_spk_hubert_large
-#      - bash scripts/itp/bash/pretrained_models_sid.sh hubert_models WavLM-Large 512 1e-1 1 _sanych_spk_hubert_large
-#      - bash scripts/itp/bash/pretrained_models_sid.sh hubert_models WavLM-Base-Plus 512 1e-1 1 _sanych_spk_hubert_large
-#      - bash scripts/itp/bash/pretrained_models_sid.sh hubert_models WavLM-Base 512 2e-1 1 _sanych_spk_hubert_large
-#      - bash scripts/itp/bash/pretrained_models_sid.sh hubert_models UniSpeech-SAT-Base-plus 512 1e-1 1 _sanych_spk_hubert_large
+      - bash scripts/itp/bash/pretrained_models_sid.sh hubert_models mn_hubert_pretrain_base_iter3_94k_mnp0_mp02_grep_1200kstep_1025k 512 1e-1 1 8
 #      - sleep infinity
 
 # azure blob configuration
@@ -44,8 +37,8 @@ storage:
   data_blob:
     container_name: models
     mount_dir: /datablob
-    storage_account_name: tsstd01eus
-#    storage_account_name: tsstd01scus
+#    storage_account_name: tsstd01eus
+    storage_account_name: tsstd01scus
 #    storage_account_name: tsstd01wus2
     mount_options:
       - -o

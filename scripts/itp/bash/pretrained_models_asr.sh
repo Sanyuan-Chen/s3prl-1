@@ -2,51 +2,40 @@
 
 repo_last=$6
 
-sudo pip install torch_complex
-#cp -r /datablob/users/v-sanych/sp_fairseq${repo_last} .
-#cd sp_fairseq${repo_last}
-cp -r /datablob/users/v-sanych/$1/$2/code .
-cd code
-echo "python setup.py install --user"
-#pip install -e ./ --user
-#python setup.py install --user
-#pip install sentencepiece
-sudo rm -r /fairseq
-sudo pip install -e ./
-sudo pip install sentencepiece
-cd /tmp/code
-sudo pip install -e ./
-cd /tmp/code/s3prl
-ls
-
 model_dir=$1
 model_name=$2
 bs=$3
 lr=$4
 acc=$5
-
-node=4
+node=$6
 bs_per_node=$((bs / node / acc))
 
-save_path=/datablob/users/v-sanych/s3prl_models/${model_name}_asr_bs${bs}_lr${lr}_acc${acc}_g8
+pip install torch_complex
+cp -r /datablob/users/v-sanych/${model_dir}/${model_name}/code .
+cd code
+sudo pip install --editable ./
+cd /tmp/code/s3prl
+ls
+
+save_path=/datablob/users/v-sanych/s3prl_models/${model_name}/asr/bs${bs}_lr${lr}_acc${acc}_node${node}
 model_path=/datablob/users/v-sanych/${model_dir}/${model_name}/checkpoint_last.pt
 
-#sudo python3 -m torch.distributed.launch --nproc_per_node ${node} run_downstream.py  \
-#  -n ${model_name}_asr_bs${bs}_lr${lr}_acc${acc}  \
-#  -p ${save_path}  \
-#  -o "config.optimizer.lr=${lr},,config.downstream_expert.eval_batch_size=${bs_per_node}"  \
-#  -c ./downstream/asr/config_bs${bs_per_node}_and_acc${acc}.yaml  \
-#  -m train  \
-#  -u hubert_local  \
-#  -k ${model_path} \
-#  -d asr  \
-#  --verbose -a
+sudo python3 -m torch.distributed.launch --nproc_per_node ${node} run_downstream.py  \
+  -n ${model_name}/asr/bs${bs}_lr${lr}_acc${acc}_node${node}  \
+  -p ${save_path}  \
+  -o "config.downstream_expert.loaderrc.train_batchsize=${bs_per_node},,config.downstream_expert.loaderrc.eval_batchsize=${bs_per_node},,config.optimizer.lr=${lr},,config.runner.gradient_accumulate_steps=${acc}"  \
+  -c ./downstream/asr/config.yaml  \
+  -m train  \
+  -u hubert_local  \
+  -k ${model_path} \
+  -d asr  \
+  --verbose -a
 
 ebs=$7
 # python3 run_downstream.py -n ExpName -m train -u fbank -d asr
 
 # Testing without LM
-sudo python3 run_downstream.py -m evaluate -t "test-clean" -e ${save_path}/dev-clean-best.ckpt -o "config.downstream_expert.datarc.eval_batch_size=${ebs}" | tee ${save_path}/evaluate_results_wo_lm_submission.txt
+sudo python3 run_downstream.py -m evaluate -t "test-clean" -e ${save_path}/dev-clean-best.ckpt -o "config.downstream_expert.datarc.eval_batch_size=${ebs}" | tee -a ${save_path}/evaluate_results_wo_lm.txt
 
 # Testing with LM
 sudo pip list
@@ -59,5 +48,5 @@ sudo python3 run_downstream.py -m evaluate -t "test-clean" -e ${save_path}/dev-c
         config.downstream_expert.datarc.decoder_args.lexicon='/datablob/users/v-sanych/s3prl_data/ASR_TEST_UTILS/librispeech_lexicon.lst' \
         ,,config.downstream_expert.datarc.eval_batch_size=${ebs} \
        " \
-    | tee ${save_path}/evaluate_results_w_lm_submission.txt
+    | tee -a ${save_path}/evaluate_results_w_lm.txt
 

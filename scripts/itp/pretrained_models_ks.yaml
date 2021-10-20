@@ -3,21 +3,21 @@ description: PhillyTools ConfigFile for s3prl
 # AML 
 target:
 #  name: itpeastusv100cl
-#  name: itpeusp100cl
-  name: itpeusp40cl
+  name: itpeusp100cl
+#  name: itpeusp40cl
   service: amlk8s
   vc: resrchvc
 
 # docker environment
 environment:
-  image: sanyuanchen/s3prl_v2:latest
+  image: sanyuanchen/s3prl_v2:s3prl_v2
 
 # code dir
 code:
   local_dir: .
 
 # job configuration
-  # amlt run .\scripts\itp\pretrained_models_ks.yaml pretrained_models_ks_WavLM-Large-More -y
+  # amlt run .\scripts\itp\pretrained_models_ks.yaml pretrained_models_ks_mn_hubert_pretrain_base_iter3_94k_mnp0_mp02_grep_1200kstep_1025k -y
 
   # pt run .\scripts\itp\pretrained_models_ks.yaml pretrained_models_ks_hubert_base_relative_libri60k -y
   # pt run .\scripts\itp\pretrained_models_ks.yaml pretrained_cls_models_ks_slabel_hubert_pretrain_base_iter2_label_ctc7_fix2_512_5_1 -y
@@ -26,12 +26,7 @@ jobs:
     sku: G1
     sku_count: 1
     command:
-      - bash scripts/itp/bash/pretrained_models_ks.sh hubert_models WavLM-Large-More 512 1e-6 1 _sanych_spk_hubert_large
-      - bash scripts/itp/bash/pretrained_models_ks.sh hubert_models WavLM-Large-More 512 1e-5 1 _sanych_spk_hubert_large
-#      - bash scripts/itp/bash/pretrained_models_ks.sh hubert_models WavLM-Large 512 1e-6 1 _sanych_spk_hubert_large
-#      - bash scripts/itp/bash/pretrained_models_ks.sh hubert_models WavLM-Base-Plus 512 1e-3 1 _sanych_spk_hubert_large
-#      - bash scripts/itp/bash/pretrained_models_ks.sh hubert_models WavLM-Base 512 1e-5 1 _sanych_spk_hubert_large
-#      - bash scripts/itp/bash/pretrained_models_ks.sh hubert_models UniSpeech-SAT-Base-plus 512 1e-5 1 _sanych_spk_hubert_large
+      - bash scripts/itp/bash/pretrained_models_ks.sh hubert_models mn_hubert_pretrain_base_iter3_94k_mnp0_mp02_grep_1200kstep_1025k 512 1e-5 1 1 1
       - sleep infinity
 
 # azure blob configuration

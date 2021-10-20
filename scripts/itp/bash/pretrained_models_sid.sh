@@ -1,42 +1,32 @@
 #!/bin/bash
 
-repo_last=$6
-
-pip install torch_complex
-#cp -r /datablob/users/v-sanych/sp_fairseq${repo_last} .
-#cd sp_fairseq${repo_last}
-cp -r /datablob/users/v-sanych/$1/$2/code .
-cd code
-echo "python setup.py install --user"
-#pip install -e ./ --user
-python setup.py install --user
-pip install sentencepiece
-cd /tmp/code
-pip install -e ./
-cd /tmp/code/s3prl
-ls
-
 model_dir=$1
 model_name=$2
 bs=$3
 lr=$4
 acc=$5
-
-node=8
+node=$6
 bs_per_node=$((bs / node / acc))
 
-save_path=/datablob/users/v-sanych/s3prl_models/${model_name}_sid_bs${bs}_lr${lr}_acc${acc}
+pip install torch_complex
+cp -r /datablob/users/v-sanych/${model_dir}/${model_name}/code .
+cd code
+sudo pip install --editable ./
+cd /tmp/code/s3prl
+ls
+
+save_path=/datablob/users/v-sanych/s3prl_models/${model_name}/sid/bs${bs}_lr${lr}_acc${acc}_node${node}
 model_path=/datablob/users/v-sanych/${model_dir}/${model_name}/checkpoint_last.pt
 
-#python3 -m torch.distributed.launch --nproc_per_node ${node} run_downstream.py  \
-#  -n ${model_name}_sid_bs${bs}_lr${lr}_acc${acc}  \
-#  -p ${save_path}  \
-#  -o "config.optimizer.lr=${lr}"  \
-#  -c ./downstream/voxceleb1/config_bs${bs_per_node}_and_acc${acc}.yaml  \
-#  -m train  \
-#  -u hubert_local  \
-#  -k ${model_path} \
-#  -d voxceleb1  \
-#  --verbose -a
+python3 -m torch.distributed.launch --nproc_per_node ${node} run_downstream.py  \
+  -n ${model_name}/sid/bs${bs}_lr${lr}_acc${acc}_node${node}  \
+  -p ${save_path}  \
+  -o "config.downstream_expert.loaderrc.train_batchsize=${bs_per_node},,config.downstream_expert.loaderrc.eval_batchsize=${bs_per_node},,config.optimizer.lr=${lr},,config.runner.gradient_accumulate_steps=${acc}"  \
+  -c ./downstream/voxceleb1/config.yaml  \
+  -m train  \
+  -u hubert_local  \
+  -k ${model_path} \
+  -d voxceleb1  \
+  --verbose -a
 
-python3 run_downstream.py -m evaluate -e ${save_path}/dev-best.ckpt | tee ${save_path}/evaluate_results_submission.txt
+python3 run_downstream.py -m evaluate -e ${save_path}/dev-best.ckpt | tee -a ${save_path}/evaluate_results.txt

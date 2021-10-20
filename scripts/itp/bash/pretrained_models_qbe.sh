@@ -1,27 +1,21 @@
 #!/bin/bash
 
-repo_last=$3
+model_dir=$1
+model_name=$2
 
 pip install torch_complex
-#cp -r /datablob/users/v-sanych/sp_fairseq${repo_last} .
-#cd sp_fairseq${repo_last}
-cp -r /datablob/users/v-sanych/$1/$2/code .
+cp -r /datablob/users/v-sanych/${model_dir}/${model_name}/code .
 cd code
-echo "python setup.py install --user"
-#pip install -e ./ --user
-python setup.py install --user
-pip install sentencepiece
-cd /tmp/code
-pip install -e ./
+sudo pip install --editable ./
+cd /tmp/code/s3prl
 ls
+
 sudo apt-get update
 sudo apt-get install bc default-jdk gnuplot -y
 bc --version
 java --version
 gnuplot --version
 
-model_dir=$1
-model_name=$2
 
 model_path=/datablob/users/v-sanych/${model_dir}/${model_name}/checkpoint_last.pt
 
@@ -42,7 +36,7 @@ dist_fn=cosine
 feature_selection=hidden_state_${i} #[default, hidden_states]
 
 
-save_path=/datablob/users/v-sanych/s3prl_models/${model_name}_qbe/${feature_selection}
+save_path=/datablob/users/v-sanych/s3prl_models/${model_name}/qbe/${feature_selection}
 
 # dev
 python3 run_downstream.py  \
