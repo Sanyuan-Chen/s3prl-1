@@ -8,6 +8,7 @@ acc=$5
 node=$6
 bs_per_node=$((bs / node / acc))
 
+pip install -e ./
 pip install torch_complex
 cp -r /datablob/users/v-sanych/${model_dir}/${model_name}/code .
 cd code
@@ -18,6 +19,7 @@ ls
 save_path=/datablob/users/v-sanych/s3prl_models/${model_name}/sd/bs${bs}_lr${lr}_acc${acc}_node${node}
 model_path=/datablob/users/v-sanych/${model_dir}/${model_name}/checkpoint_last.pt
 
+mkdir -p ${save_path}
 python3 -m torch.distributed.launch --nproc_per_node ${node} run_downstream.py  \
   -n ${model_name}/sd/bs${bs}_lr${lr}_acc${acc}_node${node}  \
   -p ${save_path}  \
@@ -27,7 +29,7 @@ python3 -m torch.distributed.launch --nproc_per_node ${node} run_downstream.py  
   -u hubert_local  \
   -k ${model_path} \
   -d diarization  \
-  --verbose -a
+  --verbose -a 2>&1 | tee -a ${save_path}/training_log.txt
 
 git clone https://github.com/ftshijt/dscore
 
@@ -35,6 +37,6 @@ rm -r ${save_path}/scoring
 
 python3 run_downstream.py -m evaluate -e ${save_path}/best-states-dev.ckpt
 
-./downstream/diarization/score.sh ${save_path} /datablob/users/v-sanych/s3prl_data/diarization/test | tee -a ${save_path}/test_results.txt
-./downstream/diarization/report.sh ${save_path} | tee -a ${save_path}/test_results.txt
+./downstream/diarization/score.sh ${save_path} /datablob/users/v-sanych/s3prl_data/diarization/test 2>&1 | tee -a ${save_path}/test_results.txt
+./downstream/diarization/report.sh ${save_path} 2>&1 | tee -a ${save_path}/test_results.txt
 

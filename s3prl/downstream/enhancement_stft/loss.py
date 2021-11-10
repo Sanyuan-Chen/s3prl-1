@@ -13,7 +13,7 @@ import torch.nn.functional as F
 from torch.nn.modules.loss import _Loss
 from asteroid.losses import PITLossWrapper
 
-device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+# device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
 class MSELoss(object):
     def __init__(self, num_srcs, mask_type):
@@ -34,6 +34,7 @@ class MSELoss(object):
         assert self.mask_type in ["AM", "PSM", "NPSM"]
 
     def compute_loss(self, masks, feat_length, source_attr, target_attr):
+        device = masks[0].device
         feat_length = feat_length.to(device)
         mixture_spect = source_attr["magnitude"].to(device)
         targets_spect = [t.to(device) for t in target_attr["magnitude"]]
@@ -78,6 +79,7 @@ class SISDRLoss(object):
         self.loss = PITLossWrapper(PairwiseNegSDR("sisdr"), pit_from="pw_mtx")
 
     def compute_loss(self, masks, feat_length, source_attr, wav_length, target_wav_list):
+        device = masks[0].device
         mixture_stft = source_attr["stft"].to(device)
         bs = mixture_stft.size(0)
         est_targets = torch.zeros(bs, self.num_srcs, max(wav_length)).to(device)
@@ -146,6 +148,7 @@ class PairwiseNegSDR(_Loss):
                 f"Inputs must be of shape [batch, n_src, time], got {targets.size()} and {est_targets.size()} instead"
             )
         assert targets.size() == est_targets.size()
+        device = targets.device
         length = length.to(device)
         mask = length_mask(length).to(device)
         # Step 1. Zero-mean norm
@@ -192,7 +195,7 @@ def match_wave_length(x, length):
         return new_x
 
 def length_mask(length):
-    mask = torch.zeros(len(length), max(length)).to(device)
+    mask = torch.zeros(len(length), max(length))
     for i in range(len(length)):
         mask[i, :length[i]] = 1
     return mask
