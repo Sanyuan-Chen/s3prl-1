@@ -25,7 +25,7 @@ code:
   local_dir: .
 
 # job configuration
-  # amlt run .\scripts\itp\pretrained_models_ss.yaml pretrained_models_sid_mn_hubert_pretrain_base_iter3_94k_mnp0_mp02_grep_1200kstep_1025k_lr1e4 -y
+  # amlt run .\scripts\itp\pretrained_models_ss.yaml pretrained_models_ss_mn_hubert_pretrain_base_iter3_94k_mnp0_mp02_grep_1200kstep_1025k_lr1e3 -y
 
 jobs:
   - name: training
@@ -33,7 +33,7 @@ jobs:
 #    sku: G1
     sku_count: 1
     command:
-      - bash scripts/itp/bash/pretrained_models_ss.sh hubert_models mn_hubert_pretrain_base_iter3_94k_mnp0_mp02_grep_1200kstep_1025k 64 1e-4 1 4
+      - bash scripts/itp/bash/pretrained_models_ss.sh hubert_models mn_hubert_pretrain_base_iter3_94k_mnp0_mp02_grep_1200kstep_1025k 64 1e-3 1 4
 #      - sleep infinity
 
 # azure blob configuration
