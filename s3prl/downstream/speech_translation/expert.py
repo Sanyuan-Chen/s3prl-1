@@ -1,5 +1,6 @@
 import os
 import math
+import time
 import torch
 import random
 
@@ -502,14 +503,14 @@ class DownstreamExpert(nn.Module):
                 self.best_score = torch.ones(1) * bleu.score
                 save_names.append(f'{mode}-best.ckpt') 
             
-            with open(f'{self.expdir}/{self.output_prefix}-st-{mode}.tsv', 'w') as f:
+            with open(f'{self.expdir}/{self.output_prefix}-st-{mode}.tsv', 'w', encoding='utf-8') as f:
                 print('utt_id', 'hyp', 'ref', sep='\t', file=f)
                 results = list(zip(records['ids'], records['hyps'], records['refs'], records['utt_ids']))
                 results.sort(key=lambda x: x[0])
                 for idx, hyp, ref, utt_id in results:
                     print(utt_id, hyp, ref, sep='\t', file=f)
 
-            print(bleu)
+            print(time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()), bleu)
 
             if self.use_asr:
 
@@ -525,7 +526,7 @@ class DownstreamExpert(nn.Module):
                     global_step=global_step
                 )
 
-                with open(f'{self.expdir}/{self.output_prefix}-asr-{mode}.tsv', 'w') as f:
+                with open(f'{self.expdir}/{self.output_prefix}-asr-{mode}.tsv', 'w', encoding='utf-8') as f:
                     print('utt_id', 'hyp', 'ref', sep='\t', file=f)
                     results = list(zip(records['ids'], records['asr_hyps'], records['asr_refs'], records['utt_ids']))
                     results.sort(key=lambda x: x[0])

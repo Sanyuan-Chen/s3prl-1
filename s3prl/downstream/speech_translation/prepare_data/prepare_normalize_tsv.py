@@ -37,7 +37,7 @@ if __name__ == '__main__':
     p_list = set(string.punctuation) - set("'-")
 
     lines = []
-    with open(args.input_tsv, 'r') as f:
+    with open(args.input_tsv, 'r', encoding='utf-8') as f:
         reader = csv.DictReader(
             f,
             delimiter='\t',
@@ -68,7 +68,7 @@ if __name__ == '__main__':
         line[args.key] = text
         data.append(line)
 
-    with open(args.output_tsv, 'w') as f:
+    with open(args.output_tsv, 'w', encoding='utf-8') as f:
         writer = csv.DictWriter(
             f,
             delimiter='\t',

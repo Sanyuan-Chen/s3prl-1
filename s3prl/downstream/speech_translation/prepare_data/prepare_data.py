@@ -28,7 +28,7 @@ if __name__ == '__main__':
     verbose(args, args)
     data = []
     lines = []
-    with open(args.input_tsv, 'r') as f:
+    with open(args.input_tsv, 'r', encoding='utf-8') as f:
         reader = csv.DictReader(
             f,
             delimiter='\t',
@@ -48,20 +48,23 @@ if __name__ == '__main__':
         if not os.path.isfile(file_path):
             verbose(args, f"{file_path} not exists, skip")
             continue
-        wav, sr = torchaudio.load(file_path)
-        item = {
-            'id': line[args.path_key].split('.')[0],
-            'audio': line[args.path_key],
-            'n_frames': wav.size(1),
-            'sr': sr,
-            'src_text': line[args.src_key],
-            'tgt_text': line[args.tgt_key],
-        }
-        data.append(item)
+        try:
+            wav, sr = torchaudio.load(file_path)
+            item = {
+                'id': line[args.path_key].split('.')[0],
+                'audio': line[args.path_key],
+                'n_frames': wav.size(1),
+                'sr': sr,
+                'src_text': line[args.src_key],
+                'tgt_text': line[args.tgt_key],
+            }
+            data.append(item)
+        except:
+            print(f'unable to open audio file: {file_path}')
     
     data.sort(key=lambda x: x['n_frames'])
 
-    with open(args.output_tsv, 'w') as f:
+    with open(args.output_tsv, 'w', encoding='utf-8') as f:
         writer = csv.DictWriter(
             f,
             delimiter='\t',
