@@ -18,7 +18,7 @@ target:
 
 # docker environment
 environment:
-  image: sanyuanchen/s3prl_v2:latest
+  image: sanyuanchen/s3prl_v2:s3prl_v2
 
 # code dir
 code:
