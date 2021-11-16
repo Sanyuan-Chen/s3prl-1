@@ -11,11 +11,11 @@ pip install -e ./
 cd /tmp/code/s3prl
 ls
 
-save_path=/datablob/users/v-sanych/s3prl_models/hubert/st/bs${bs}_lr${lr}_acc${acc}_node${node}
-model_path=/datablob/users/v-sanych/pretrained_models/hubert_base_ls960.pt.new
+#save_path=/datablob/users/v-sanych/s3prl_models/hubert/st/bs${bs}_lr${lr}_acc${acc}_node${node}
+#model_path=/datablob/users/v-sanych/pretrained_models/hubert_base_ls960.pt.new
 
-#save_path=/datablob/users/v-sanych/s3prl_models/hubert_large_sd_bs${bs}_lr1e${lr}_acc${acc}
-#model_path=/datablob/users/v-sanych/pretrained_models/hubert_large_ll60k.pt
+save_path=/datablob/users/v-sanych/s3prl_models/hubert_large/st/bs${bs}_lr${lr}_acc${acc}_node${node}
+model_path=/datablob/users/v-sanych/pretrained_models/hubert_large_ll60k.pt
 
 mkdir -p ${save_path}
 python3 -m torch.distributed.launch --nproc_per_node ${node} run_downstream.py  \
@@ -30,4 +30,4 @@ python3 -m torch.distributed.launch --nproc_per_node ${node} run_downstream.py  
   --verbose -a 2>&1 | tee -a ${save_path}/training_log.txt
 
 
-python3 run_downstream.py -m evaluate -e ${save_path}/dev-best.ckpt 2>&1 | tee -a ${save_path}/test_results.txt
+python3 run_downstream.py -m evaluate -e ${save_path}/dev-best.ckpt -o "config.downstream_expert.datarc.max_tokens=10000" 2>&1 | tee -a ${save_path}/test_results.txt
