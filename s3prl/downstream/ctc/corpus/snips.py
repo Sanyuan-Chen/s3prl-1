@@ -52,7 +52,9 @@ class SnipsDataset(Dataset):
         #    delayed(read_text)(str(f)) for f in file_list)
         #text = Parallel(n_jobs=-1)(delayed(tokenizer.encode)(txt) for txt in text)
         text = [transcripts[str(f).split('.wav', 1)[0].split('/')[-1]] for f in file_list]
-        text = [tokenizer.encode(txt) for txt in tqdm(text, desc='tokenizing')]
+        print('tokenizing')
+        text = [tokenizer.encode(txt) for txt in text]
+        # text = [tokenizer.encode(txt) for txt in tqdm(text, desc='tokenizing')]
 
         # Sort dataset by text length
         #file_len = Parallel(n_jobs=num_workers)(delayed(getsize)(f) for f in file_list)

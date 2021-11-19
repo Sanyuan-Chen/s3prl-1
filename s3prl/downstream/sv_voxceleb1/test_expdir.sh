@@ -31,7 +31,7 @@ do
     log_dir="$expdir/states-$state_name"
     if [ ! -d "$log_dir" ] || [ "$(cat "$log_dir"/log.txt | grep "test-EER" | wc -l)" -lt 1 ] || [ ! -f $log_dir/test_predict.txt ]; then
         mkdir -p $log_dir
-        override=args.expdir=${log_dir},,config.downstream_expert.datarc.file_path=${voxceleb1}
+        override=args.expdir=${log_dir},,config.downstream_expert.datarc.file_path=${voxceleb1},,config.downstream_expert.datarc.eval_batch_size=1
         python3 run_downstream.py -m evaluate -e $ckpt_path -o $override > $log_dir/log.txt
     fi
 done

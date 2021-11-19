@@ -1,4 +1,5 @@
 import os
+import time
 import math
 import torch
 import random
@@ -121,7 +122,7 @@ class DownstreamExpert(nn.Module):
 
         save_names = []
         for key, value in results.items():
-            print(f"{split} {key}: {value}")
+            print(f"{time.strftime('%Y-%m-%d %H:%M:%S', time.localtime())} {split} {key}: {value}")
 
             logger.add_scalar(
                 f"{self._get_task_name()}/{split}-{key}", value, global_step=global_step

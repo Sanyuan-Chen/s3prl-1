@@ -64,7 +64,9 @@ class LibriPhoneDataset(Dataset):
             file_list += split_list
         
         text = []
-        for f in tqdm(file_list, desc='word -> phonemes'):
+        print('word -> phonemes')
+        for f in file_list:
+        # for f in tqdm(file_list, desc='word -> phonemes'):
             text.append(read_text(str(f), word2phonemes, tokenizer))
 
         self.file_list, self.text = zip(*[(f_name, txt)

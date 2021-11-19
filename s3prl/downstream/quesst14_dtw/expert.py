@@ -133,9 +133,11 @@ class DownstreamExpert(nn.Module):
                             dtwrc,
                         )
                     )
-            for future in tqdm(
-                as_completed(futures), total=len(futures), ncols=0, desc="DTW"
-            ):
+            print("DTW")
+            for future in as_completed(futures):
+            # for future in tqdm(
+            #     as_completed(futures), total=len(futures), ncols=0, desc="DTW"
+            # ):
                 query_name, doc_name, score = future.result()
                 results[query_name].append((doc_name, score))
 

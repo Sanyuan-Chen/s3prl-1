@@ -12,6 +12,7 @@
 ###############
 import os
 import math
+import time
 import torch
 import random
 import pathlib
@@ -121,7 +122,7 @@ class DownstreamExpert(nn.Module):
             )
             with open(Path(self.expdir) / "log.log", 'a') as f:
                 if key == 'acc':
-                    print(f"{mode} {key}: {average}")
+                    print(f"{time.strftime('%Y-%m-%d %H:%M:%S', time.localtime())} {mode} {key}: {average}")
                     f.write(f'{mode} at step {global_step}: {average}\n')
                     if mode == 'dev' and average > self.best_score:
                         self.best_score = torch.ones(1) * average
