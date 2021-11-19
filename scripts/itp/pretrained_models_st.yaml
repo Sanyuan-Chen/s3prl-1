@@ -2,16 +2,16 @@ description: PhillyTools ConfigFile for s3prl
 
 # AML 
 target:
-#  name: itpeastusv100cl
+  name: itpeastusv100cl
 #  name: itpeusp100cl
 #  name: itpscusv100cl
-  name: itp-v100-scus-2
+#  name: itp-v100-scus-2
 #  name: itp-v100-wus2
 #  name: itpeusp40cl
 #  name: itp-p40-eus-01
   service: amlk8s
-#  vc: resrchvc
-  vc: speech-itp-ahuna
+  vc: resrchvc
+#  vc: speech-itp-ahuna
 #  vc: speech-itp-am-e2e
 #  vc: speech-itp-default
 #  queue: bonus
@@ -25,31 +25,27 @@ code:
   local_dir: .
 
 # job configuration
-  # amlt run .\scripts\itp\pretrained_models_st.yaml pretrained_models_st_mn_hubert_pretrain_base_iter2_bigram_lm_mnp0_mp02_grep_lr5e4 -y
+  # amlt run .\scripts\itp\pretrained_models_st.yaml pretrained_models_st_mn_hubert_pretrain_base_iter3_94k_mnp0_mp02_grep_1200kstep_1025k_lr5e3 -y
 
 jobs:
   - name: training
     sku: G4
-#    sku: G1
+#    sku: G8
     sku_count: 1
     command:
-      - bash scripts/itp/bash/pretrained_models_st.sh hubert_models mn_hubert_pretrain_base_iter2_bigram_lm_mnp0_mp02_grep 80000 5e-4 1 4
-#      - bash scripts/itp/bash/pretrained_models_st.sh hubert_models mn_hubert_pretrain_base_iter2_bigram_lm_mnp0_mp02_grep 80000 5e-3 1 4
-#      - bash scripts/itp/bash/pretrained_models_st.sh hubert_models mn_hubert_pretrain_base_iter2_bigram_lm_mnp0_mp02_grep 80000 1e-3 1 4
-#      - bash scripts/itp/bash/pretrained_models_st.sh hubert_models mn_hubert_pretrain_base_iter3_94k_mnp0_mp02_grep_1200kstep_1025k 80000 2e-3 1 4
-#      - bash scripts/itp/bash/pretrained_models_st.sh hubert_models mn_hubert_pretrain_base_iter3_94k_mnp0_mp02_grep_1200kstep_1025k 80000 5e-4 1 4
-#      - bash scripts/itp/bash/pretrained_models_st.sh hubert_models mn_hubert_pretrain_base_iter3_94k_mnp0_mp02_grep_1200kstep_1025k 80000 5e-3 1 4
-#      - bash scripts/itp/bash/pretrained_models_st.sh hubert_models mn_hubert_pretrain_base_iter3_94k_mnp0_mp02_grep_1200kstep_1025k 80000 1e-2 1 4
-#      - bash scripts/itp/bash/pretrained_models_st.sh hubert_models mn_hubert_pretrain_base_iter3_94k_mnp0_mp02_grep_1200kstep_1025k 80000 1e-3 1 4
-#      - sleep infinity
+      # wavlm-base+
+      - bash scripts/itp/bash/pretrained_models_st.sh hubert_models mn_hubert_pretrain_base_iter3_94k_mnp0_mp02_grep_1200kstep_1025k 80000 1e-3 1 4
+
+      # wavlm-large
+#      - bash scripts/itp/bash/pretrained_models_st.sh hubert_models mn_hubert_pretrain_large_94k_mnp0_mp02_grep_700k_600kstep_conti_620 160000 1e-3 2 8
 
 # azure blob configuration
 storage:
   data_blob:
     container_name: models
     mount_dir: /datablob
-#    storage_account_name: tsstd01eus
-    storage_account_name: tsstd01scus
+    storage_account_name: tsstd01eus
+#    storage_account_name: tsstd01scus
 #    storage_account_name: tsstd01wus2
     mount_options:
       - -o

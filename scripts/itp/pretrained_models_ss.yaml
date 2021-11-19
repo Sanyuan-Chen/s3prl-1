@@ -4,14 +4,14 @@ description: PhillyTools ConfigFile for s3prl
 target:
 #  name: itpeastusv100cl
 #  name: itpeusp100cl
-#  name: itpscusv100cl
-  name: itp-v100-scus-2
+  name: itpscusv100cl
+#  name: itp-v100-scus-2
 #  name: itp-v100-wus2
 #  name: itpeusp40cl
 #  name: itp-p40-eus-01
   service: amlk8s
-#  vc: resrchvc
-  vc: speech-itp-ahuna
+  vc: resrchvc
+#  vc: speech-itp-ahuna
 #  vc: speech-itp-am-e2e
 #  vc: speech-itp-default
 #  queue: bonus
@@ -30,11 +30,14 @@ code:
 jobs:
   - name: training
     sku: G4
-#    sku: G1
+#    sku: G8
     sku_count: 1
     command:
+      # wavlm base+
       - bash scripts/itp/bash/pretrained_models_ss.sh hubert_models mn_hubert_pretrain_base_iter3_94k_mnp0_mp02_grep_1200kstep_1025k 64 1e-3 1 4
-#      - sleep infinity
+
+      # wavlm large
+#      - bash scripts/itp/bash/pretrained_models_ss.sh hubert_models mn_hubert_pretrain_large_94k_mnp0_mp02_grep_700k_600kstep_conti_620 64 1e-3 1 8
 
 # azure blob configuration
 storage:

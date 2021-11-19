@@ -32,19 +32,10 @@ jobs:
   - name: training
     sku: G8
 #    sku: G4
-#    sku: G1
     sku_count: 1
     command:
-      - bash scripts/itp/bash/hubert_st.sh 80000 1e-2 1 8
-#      - bash scripts/itp/bash/hubert_st.sh 80000 1e-3 1 8
-
-#      - bash scripts/itp/bash/hubert_st.sh 80000 1e-1 1 4
-#      - bash scripts/itp/bash/hubert_st.sh 80000 1e-5 1 4
-#      - bash scripts/itp/bash/hubert_st.sh 80000 1e-4 1 4
-#      - bash scripts/itp/bash/hubert_st.sh 80000 1e-2 1 4
-#      - bash scripts/itp/bash/hubert_st.sh 80000 1e-3 1 4
-
-#      - bash scripts/itp/bash/hubert_st.sh 80000 1e-3 8 1
+      # hubert large
+      - bash scripts/itp/bash/hubert_st.sh 160000 1e-3 2 8
 
 # azure blob configuration
 storage:

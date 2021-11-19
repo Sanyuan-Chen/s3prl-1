@@ -11,11 +11,11 @@ pip install -e ./
 cd /tmp/code/s3prl
 ls
 
-save_path=/datablob/users/v-sanych/s3prl_models/hubert/se/bs${bs}_lr${lr}_acc${acc}_node${node}
-model_path=/datablob/users/v-sanych/pretrained_models/hubert_base_ls960.pt.new
+#save_path=/datablob/users/v-sanych/s3prl_models/hubert/se/bs${bs}_lr${lr}_acc${acc}_node${node}
+#model_path=/datablob/users/v-sanych/pretrained_models/hubert_base_ls960.pt.new
 
-#save_path=/datablob/users/v-sanych/s3prl_models/hubert_large_sd_bs${bs}_lr1e${lr}_acc${acc}
-#model_path=/datablob/users/v-sanych/pretrained_models/hubert_large_ll60k.pt
+save_path=/datablob/users/v-sanych/s3prl_models/hubert_large/se/bs${bs}_lr${lr}_acc${acc}_node${node}
+model_path=/datablob/users/v-sanych/pretrained_models/hubert_large_ll60k.pt
 
 mkdir -p ${save_path}
 python3 -m torch.distributed.launch --nproc_per_node ${node} run_downstream.py  \
