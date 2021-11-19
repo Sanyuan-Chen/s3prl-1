@@ -33,6 +33,8 @@ jobs:
 #    sku: G4
     sku_count: 1
     command:
+      # hubert base
+#      - bash scripts/itp/bash/hubert_ss.sh 64 1e-3 1 4
       # hubert large
       - bash scripts/itp/bash/hubert_ss.sh 64 1e-3 1 8
 
