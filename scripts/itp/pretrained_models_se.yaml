@@ -33,11 +33,13 @@ jobs:
 #    sku: G8
     sku_count: 1
     command:
+      # recommended hyperparamters: bs 64, lr 5e-4,  acc 1, node 4 or 8
+
       # wavlm base+
-      - bash scripts/itp/bash/pretrained_models_se.sh hubert_models mn_hubert_pretrain_base_iter3_94k_mnp0_mp02_grep_1200kstep_1025k 64 1e-3 1 4
+      - bash scripts/itp/bash/pretrained_models_se.sh hubert_models mn_hubert_pretrain_base_iter3_94k_mnp0_mp02_grep_1200kstep_1025k 64 5e-4 1 4
 
       # wavlm large
-#      - bash scripts/itp/bash/pretrained_models_se.sh hubert_models mn_hubert_pretrain_large_94k_mnp0_mp02_grep_700k_600kstep_conti_620 64 1e-3 1 8
+#      - bash scripts/itp/bash/pretrained_models_se.sh hubert_models mn_hubert_pretrain_large_94k_mnp0_mp02_grep_700k_600kstep_conti_620 64 5e-4 1 8
 
 # azure blob configuration
 storage:

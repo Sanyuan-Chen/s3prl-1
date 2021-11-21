@@ -29,8 +29,13 @@ jobs:
 #    sku: G1
     sku_count: 1
     command:
-      - bash scripts/itp/bash/pretrained_models_sd.sh hubert_models mn_hubert_pretrain_base_iter3_94k_mnp0_mp02_grep_1200kstep_1025k 256 1e-3 4 4
-      - sleep infinity
+      # recommended hyperparamters: bs 256, lr 1e-3,  acc 4, node 4 or 8
+
+      # wavlm base+
+      - bash scripts/itp/bash/pretrained_models_sd.sh hubert_models mn_hubert_pretrain_base_iter3_94k_mnp0_mp02_grep_1200kstep_1025k 256 2e-3 4 4
+
+      # wavlm large
+      - bash scripts/itp/bash/pretrained_models_sd.sh hubert_models mn_hubert_pretrain_base_iter3_94k_mnp0_mp02_grep_1200kstep_1025k 256 5e-3 4 8
 
 # azure blob configuration
 storage:

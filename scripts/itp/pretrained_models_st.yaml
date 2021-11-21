@@ -2,9 +2,9 @@ description: PhillyTools ConfigFile for s3prl
 
 # AML 
 target:
-  name: itpeastusv100cl
+#  name: itpeastusv100cl
 #  name: itpeusp100cl
-#  name: itpscusv100cl
+  name: itpscusv100cl
 #  name: itp-v100-scus-2
 #  name: itp-v100-wus2
 #  name: itpeusp40cl
@@ -33,6 +33,8 @@ jobs:
 #    sku: G8
     sku_count: 1
     command:
+      # recommended hyperparamters: bs 8w for base / 16w for large, lr 1e-3,  acc 1 for base / 2 for large, node 4 or 8
+
       # wavlm-base+
       - bash scripts/itp/bash/pretrained_models_st.sh hubert_models mn_hubert_pretrain_base_iter3_94k_mnp0_mp02_grep_1200kstep_1025k 80000 1e-3 1 4
 
@@ -44,8 +46,8 @@ storage:
   data_blob:
     container_name: models
     mount_dir: /datablob
-    storage_account_name: tsstd01eus
-#    storage_account_name: tsstd01scus
+#    storage_account_name: tsstd01eus
+    storage_account_name: tsstd01scus
 #    storage_account_name: tsstd01wus2
     mount_options:
       - -o
