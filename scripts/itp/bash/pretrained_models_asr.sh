@@ -1,7 +1,5 @@
 #!/bin/bash
 
-repo_last=$6
-
 model_dir=$1
 model_name=$2
 bs=$3
@@ -10,16 +8,18 @@ acc=$5
 node=$6
 bs_per_node=$((bs / node / acc))
 
-pip install torch_complex
+sudo pip install -e ./
+sudo pip install torch_complex
 cp -r /datablob/users/v-sanych/${model_dir}/${model_name}/code .
 cd code
-sudo pip install --editable ./
+sudo sudo pip install --editable ./
 cd /tmp/code/s3prl
 ls
 
 save_path=/datablob/users/v-sanych/s3prl_models/${model_name}/asr/bs${bs}_lr${lr}_acc${acc}_node${node}
 model_path=/datablob/users/v-sanych/${model_dir}/${model_name}/checkpoint_last.pt
 
+mkdir -p ${save_path}
 sudo python3 -m torch.distributed.launch --nproc_per_node ${node} run_downstream.py  \
   -n ${model_name}/asr/bs${bs}_lr${lr}_acc${acc}_node${node}  \
   -p ${save_path}  \
@@ -29,13 +29,13 @@ sudo python3 -m torch.distributed.launch --nproc_per_node ${node} run_downstream
   -u hubert_local  \
   -k ${model_path} \
   -d asr  \
-  --verbose -a
+  --verbose -a 2>&1 | tee -a ${save_path}/training_log.txt
 
 ebs=$7
 # python3 run_downstream.py -n ExpName -m train -u fbank -d asr
 
 # Testing without LM
-sudo python3 run_downstream.py -m evaluate -t "test-clean" -e ${save_path}/dev-clean-best.ckpt -o "config.downstream_expert.datarc.eval_batch_size=${ebs}" | tee -a ${save_path}/evaluate_results_wo_lm.txt
+sudo python3 run_downstream.py -m evaluate -t "test-clean" -e ${save_path}/dev-clean-best.ckpt -o "config.downstream_expert.datarc.eval_batch_size=${ebs}" 2>&1 | tee -a ${save_path}/evaluate_results_wo_lm.txt
 
 # Testing with LM
 sudo pip list
@@ -48,5 +48,5 @@ sudo python3 run_downstream.py -m evaluate -t "test-clean" -e ${save_path}/dev-c
         config.downstream_expert.datarc.decoder_args.lexicon='/datablob/users/v-sanych/s3prl_data/ASR_TEST_UTILS/librispeech_lexicon.lst' \
         ,,config.downstream_expert.datarc.eval_batch_size=${ebs} \
        " \
-    | tee -a ${save_path}/evaluate_results_w_lm.txt
+    2>&1 | tee -a ${save_path}/evaluate_results_w_lm.txt
 

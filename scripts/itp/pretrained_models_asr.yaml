@@ -2,34 +2,43 @@ description: PhillyTools ConfigFile for s3prl
 
 # AML 
 target:
-  name: itpeastusv100cl
+#  name: itpeastusv100cl
 #  name: itpeusp100cl
-#  name: itpeusp40cl
 #  name: itpscusv100cl
-#  name: itplabrr1cl1
+#  name: itp-v100-scus-2
+  name: itp-v100-wus2
+#  name: itpeusp40cl
 #  name: itp-p40-eus-01
   service: amlk8s
-  vc: resrchvc
+#  vc: resrchvc
+#  vc: speech-itp-ahuna
+  vc: speech-itp-am-e2e
 #  vc: speech-itp-default
+#  queue: bonus
 
 # docker environment
 environment:
-  image: sanyuanchen/s3prl_devel:s3prl_v2
+  image: sanyuanchen/s3prl_devel:latest
 
 # code dir
 code:
   local_dir: .
 
 # job configuration
-  # amlt run .\scripts\itp\pretrained_models_asr.yaml pretrained_models_asr_bc_m_hubert_pretrain_large_from_scratch_sl12_90k_s375k_lr5e4 -y
+  # amlt run .\scripts\itp\pretrained_models_asr.yaml pretrained_models_asr_mn_hubert_pretrain_base_iter3_94k_mnp0_mp02_grep_1200kstep_1025k_lr2e4 -y
 jobs:
   - name: training
-    sku: G4
+    sku: G8
 #    sku: G1
     sku_count: 1
     command:
-      - bash scripts/itp/bash/pretrained_models_asr.sh hubert_models mn_hubert_pretrain_base_iter3_94k_mnp0_mp02_grep_1200kstep_1025k 128 1e-4 1 4 16
-#      - sleep infinity
+      # recommended hyperparamters: bs 128, lr 1e-4,  acc 1, node 4 or 8
+
+      # wavlm base+
+      - bash scripts/itp/bash/pretrained_models_asr.sh hubert_models mn_hubert_pretrain_base_iter3_94k_mnp0_mp02_grep_1200kstep_1025k 128 2e-4 1 8 16
+
+      # wavlm large
+#      - bash scripts/itp/bash/pretrained_models_asr.sh hubert_models mn_hubert_pretrain_large_94k_mnp0_mp02_grep_700k_600kstep_conti_620 128 1e-4 1 8 16
 
 # azure blob configuration
 storage:
