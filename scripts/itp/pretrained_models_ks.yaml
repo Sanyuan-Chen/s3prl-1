@@ -3,10 +3,18 @@ description: PhillyTools ConfigFile for s3prl
 # AML 
 target:
 #  name: itpeastusv100cl
-  name: itpeusp100cl
+#  name: itpeusp100cl
+#  name: itpscusv100cl
+  name: itp-v100-scus-2
+#  name: itp-v100-wus2
 #  name: itpeusp40cl
+#  name: itp-p40-eus-01
   service: amlk8s
-  vc: resrchvc
+#  vc: resrchvc
+  vc: speech-itp-ahuna
+#  vc: speech-itp-am-e2e
+#  vc: speech-itp-default
+#  queue: bonus
 
 # docker environment
 environment:
@@ -17,25 +25,28 @@ code:
   local_dir: .
 
 # job configuration
-  # amlt run .\scripts\itp\pretrained_models_ks.yaml pretrained_models_ks_mn_hubert_pretrain_base_iter3_94k_mnp0_mp02_grep_1200kstep_1025k -y
+  # amlt run .\scripts\itp\pretrained_models_ks.yaml pretrained_models_ks_mn_hubert_pretrain_base_iter3_94k_mnp0_mp02_grep_1200kstep_1025k_lr1e3 -y
 
-  # pt run .\scripts\itp\pretrained_models_ks.yaml pretrained_models_ks_hubert_base_relative_libri60k -y
-  # pt run .\scripts\itp\pretrained_models_ks.yaml pretrained_cls_models_ks_slabel_hubert_pretrain_base_iter2_label_ctc7_fix2_512_5_1 -y
 jobs:
   - name: training
-    sku: G1
+    sku: G4
     sku_count: 1
     command:
-      - bash scripts/itp/bash/pretrained_models_ks.sh hubert_models mn_hubert_pretrain_base_iter3_94k_mnp0_mp02_grep_1200kstep_1025k 512 1e-5 1 1 1
-      - sleep infinity
+      # recommended hyperparamters: bs 512, lr 1e-5,  acc 1, node 1 or 4
+
+      # wavlm base+
+      - bash scripts/itp/bash/pretrained_models_ks.sh hubert_models mn_hubert_pretrain_base_iter3_94k_mnp0_mp02_grep_1200kstep_1025k 512 1e-3 1 4
+
+      # wavlm large
+#      - bash scripts/itp/bash/pretrained_models_ks.sh hubert_models mn_hubert_pretrain_large_94k_mnp0_mp02_grep_700k_600kstep_conti_620 512 1e-5 1 4
 
 # azure blob configuration
 storage:
   data_blob:
     container_name: models
     mount_dir: /datablob
-    storage_account_name: tsstd01eus
-#    storage_account_name: tsstd01scus
+#    storage_account_name: tsstd01eus
+    storage_account_name: tsstd01scus
 #    storage_account_name: tsstd01wus2
     mount_options:
       - -o

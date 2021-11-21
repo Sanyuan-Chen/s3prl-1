@@ -25,7 +25,21 @@ jobs:
 #    sku: G1
     sku_count: 1
     command:
-      - bash scripts/itp/bash/pretrained_models_er.sh hubert_models mn_hubert_pretrain_base_iter3_94k_mnp0_mp02_grep_1200kstep_1025k 32 1e-4 1 4 1
+      # recommended hyperparamters: bs 32, lr 1e-4,  acc 1, node 4
+
+      # wavlm base+
+#      - bash scripts/itp/bash/pretrained_models_er.sh hubert_models mn_hubert_pretrain_base_iter3_94k_mnp0_mp02_grep_1200kstep_1025k 32 1e-4 1 4 1
+#      - bash scripts/itp/bash/pretrained_models_er.sh hubert_models mn_hubert_pretrain_base_iter3_94k_mnp0_mp02_grep_1200kstep_1025k 32 1e-4 1 4 2
+#      - bash scripts/itp/bash/pretrained_models_er.sh hubert_models mn_hubert_pretrain_base_iter3_94k_mnp0_mp02_grep_1200kstep_1025k 32 1e-4 1 4 3
+#      - bash scripts/itp/bash/pretrained_models_er.sh hubert_models mn_hubert_pretrain_base_iter3_94k_mnp0_mp02_grep_1200kstep_1025k 32 1e-4 1 4 4
+      - bash scripts/itp/bash/pretrained_models_er.sh hubert_models mn_hubert_pretrain_base_iter3_94k_mnp0_mp02_grep_1200kstep_1025k 32 1e-4 1 4 5
+
+      # wavlm large
+#      - bash scripts/itp/bash/pretrained_models_er.sh hubert_models mn_hubert_pretrain_base_iter3_94k_mnp0_mp02_grep_1200kstep_1025k 32 1e-5 1 4 1
+#      - bash scripts/itp/bash/pretrained_models_er.sh hubert_models mn_hubert_pretrain_base_iter3_94k_mnp0_mp02_grep_1200kstep_1025k 32 1e-5 1 4 2
+#      - bash scripts/itp/bash/pretrained_models_er.sh hubert_models mn_hubert_pretrain_base_iter3_94k_mnp0_mp02_grep_1200kstep_1025k 32 1e-5 1 4 3
+#      - bash scripts/itp/bash/pretrained_models_er.sh hubert_models mn_hubert_pretrain_base_iter3_94k_mnp0_mp02_grep_1200kstep_1025k 32 1e-5 1 4 4
+#      - bash scripts/itp/bash/pretrained_models_er.sh hubert_models mn_hubert_pretrain_base_iter3_94k_mnp0_mp02_grep_1200kstep_1025k 32 1e-5 1 4 5
 
 # azure blob configuration
 storage:

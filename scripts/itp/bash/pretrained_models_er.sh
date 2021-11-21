@@ -9,6 +9,7 @@ node=$6
 fold=$7
 bs_per_node=$((bs / node / acc))
 
+pip install -e ./
 pip install torch_complex
 cp -r /datablob/users/v-sanych/${model_dir}/${model_name}/code .
 cd code
@@ -19,6 +20,7 @@ ls
 save_path=/datablob/users/v-sanych/s3prl_models/${model_name}/er/fold${fold}_bs${bs}_lr${lr}_acc${acc}_node${node}
 model_path=/datablob/users/v-sanych/${model_dir}/${model_name}/checkpoint_last.pt
 
+mkdir -p ${save_path}
 ## The default config is "downstream/emotion/config.yaml"
 python3 -m torch.distributed.launch --nproc_per_node ${node} run_downstream.py \
   -n ${model_name}/er/fold${fold}_bs${bs}_lr${lr}_acc${acc}_node${node}  \
@@ -30,13 +32,13 @@ python3 -m torch.distributed.launch --nproc_per_node ${node} run_downstream.py \
   -u hubert_local  \
   -k ${model_path} \
   -d emotion  \
-  --verbose -a
+  --verbose -a 2>&1 | tee -a ${save_path}/training_log.txt
 
 for (( i = 1; i < 6; i++ )); do
 
 save_path=/datablob/users/v-sanych/s3prl_models/${model_name}/er/fold${i}_bs${bs}_lr${lr}_acc${acc}_node${node}
 echo model_path | tee -a ${save_path}/evaluate_results.txt
 
-python3 run_downstream.py -m evaluate -e ${save_path}/dev-best.ckpt  | tee -a ${save_path}/evaluate_results.txt
+python3 run_downstream.py -m evaluate -e ${save_path}/dev-best.ckpt  2>&1 | tee -a ${save_path}/evaluate_results.txt
 
 done
