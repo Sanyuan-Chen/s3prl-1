@@ -4,9 +4,17 @@ description: PhillyTools ConfigFile for s3prl
 target:
 #  name: itpeastusv100cl
 #  name: itpeusp100cl
+#  name: itpscusv100cl
+#  name: itp-v100-scus-2
+#  name: itp-v100-wus2
   name: itpeusp40cl
+#  name: itp-p40-eus-01
   service: amlk8s
   vc: resrchvc
+#  vc: speech-itp-ahuna
+#  vc: speech-itp-am-e2e
+#  vc: speech-itp-default
+#  queue: bonus
 
 # docker environment
 environment:
@@ -18,13 +26,15 @@ code:
 
 # job configuration
   # amlt run .\scripts\itp\pretrained_models_qbe.yaml pretrained_models_qbe_mn_hubert_pretrain_base_iter3_94k_mnp0_mp02_grep_1200kstep_1025k -y
-  # pt run .\scripts\itp\pretrained_models_qbe.yaml pretrained_cls_models_qbe_slabel_hubert_pretrain_base_iter2_label_ctc7_fix2 -y
 jobs:
   - name: training
     sku: G1
     sku_count: 1
     command:
-      - bash scripts/itp/bash/pretrained_models_qbe.sh hubert_models mn_hubert_pretrain_base_iter3_94k_mnp0_mp02_grep_1200kstep_1025k
+      # wavlm base+
+      - bash scripts/itp/bash/pretrained_models_qbe.sh hubert_models mn_hubert_pretrain_base_iter3_94k_mnp0_mp02_grep_1200kstep_1025k 12
+      # wavlm large
+#      - bash scripts/itp/bash/pretrained_models_qbe.sh hubert_models mn_hubert_pretrain_large_94k_mnp0_mp02_grep_700k_600kstep_conti_620 24
 
 # azure blob configuration
 storage:

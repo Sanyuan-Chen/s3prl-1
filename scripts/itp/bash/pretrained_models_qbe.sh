@@ -2,7 +2,9 @@
 
 model_dir=$1
 model_name=$2
+model_layer=$3
 
+pip install -e ./
 pip install torch_complex
 cp -r /datablob/users/v-sanych/${model_dir}/${model_name}/code .
 cd code
@@ -20,10 +22,7 @@ gnuplot --version
 model_path=/datablob/users/v-sanych/${model_dir}/${model_name}/checkpoint_last.pt
 
 
-#for (( i = 0; i < 13; i++ )); do
-#for (( i = 0; i < 25; i++ )); do
-#for (( i = 24; i >=0; i-- )); do
-for (( i = 12; i >=0; i-- )); do
+for (( i = ${model_layer}; i >=0; i-- )); do
 
 cd /tmp/code/s3prl
 # Dynamic Time Warping (DTW)
@@ -37,6 +36,7 @@ feature_selection=hidden_state_${i} #[default, hidden_states]
 
 
 save_path=/datablob/users/v-sanych/s3prl_models/${model_name}/qbe/${feature_selection}
+mkdir -p ${save_path}
 
 # dev
 python3 run_downstream.py  \
@@ -50,7 +50,7 @@ python3 run_downstream.py  \
   -d quesst14_dtw  \
   -t "dev" \
   -s ${feature_selection} \
-  --verbose
+  --verbose 2>&1 | tee -a ${save_path}/dev_log.txt
 
 
 # test
@@ -65,7 +65,7 @@ python3 run_downstream.py  \
   -d quesst14_dtw  \
   -t "test" \
   -s ${feature_selection} \
-  --verbose
+  --verbose 2>&1 | tee -a ${save_path}/test_log.txt
 
 
 # Scoring
@@ -74,11 +74,11 @@ cd /datablob/users/v-sanych/s3prl_data/quesst14Database/scoring
 
 # dev
 ./score-TWV-Cnxe.sh ${save_path}_dev \
-    groundtruth_quesst14_dev -10
+    groundtruth_quesst14_dev -10 2>&1 | tee -a ${save_path}/dev_score_log.txt
 
 # test
 ./score-TWV-Cnxe.sh ${save_path}_test \
-    groundtruth_quesst14_eval -10
+    groundtruth_quesst14_eval -10 2>&1 | tee -a ${save_path}/test_score_log.txt
 
 
 
