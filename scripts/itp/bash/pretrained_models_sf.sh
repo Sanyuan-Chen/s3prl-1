@@ -33,4 +33,4 @@ python3 -m torch.distributed.launch --nproc_per_node ${node} run_downstream.py  
 
 # python3 run_downstream.py -n ExpName -m train -u fbank -d ctc -c downstream/ctc/snips.yaml
 
-python3 run_downstream.py -m evaluate -e ${save_path}/valid-best.ckpt 2>&1 | tee -a ${save_path}/evaluate_results.txt
+python3 run_downstream.py -m evaluate -e ${save_path}/dev-best.ckpt 2>&1 | tee -a ${save_path}/evaluate_results.txt

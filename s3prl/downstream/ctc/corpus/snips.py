@@ -1,6 +1,7 @@
 from tqdm import tqdm, trange
 from pathlib import Path
-from os.path import join, getsize
+from os.path import join, getsize, exists
+import json
 from joblib import Parallel, delayed
 from torch.utils.data import Dataset
 
@@ -24,7 +25,16 @@ class SnipsDataset(Dataset):
         # List all wave files
         file_list = []
         for s in split:
-            split_list = list(Path(join(path, s)).rglob("*.wav"))
+            cache_path = f"{join(path, s)}.split_list_cache"
+            if exists(cache_path):
+                split_list = json.load(open(cache_path, 'r'))
+                split_list = [Path(i) for i in split_list]
+                print(f"loaded split_list from {cache_path}")
+            else:
+                split_list = list(Path(join(path, s)).rglob("*.wav"))
+                split_list_tmp = [str(i) for i in split_list]
+                json.dump(split_list_tmp, open(cache_path, 'w'))
+                print(f"save split_list to {cache_path}")
             #for spk in self.speaker_list:
             #    print('- '+spk)
             #    for wav_file in tmp_split_list:
