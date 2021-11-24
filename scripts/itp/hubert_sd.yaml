@@ -4,34 +4,44 @@ description: PhillyTools ConfigFile for s3prl
 target:
 #  name: itpeastusv100cl
 #  name: itpeusp100cl
-  name: itpeusp40cl
+#  name: itpscusv100cl
+  name: itp-v100-wus2
+#  name: itpeusp40cl
+#  name: itp-p40-eus-01
   service: amlk8s
-  vc: resrchvc
+#  vc: resrchvc
+  vc: speech-itp-am-e2e
+#  vc: speech-itp-default
+  queue: bonus
 
 # docker environment
 environment:
-  image: sanyuanchen/s3prl_v2:latest
+  image: sanyuanchen/s3prl_v2:s3prl_v2
 
 # code dir
 code:
   local_dir: .
 
 # job configuration
+  # amlt run .\scripts\itp\hubert_sd.yaml hubert_sd_lr1e3 -y
+  # amlt run .\scripts\itp\hubert_sd.yaml hubert_large_sd_lr1e3 -y
+
 jobs:
   - name: training
-#    sku: G4
-    sku: G1
+    sku: G8
     sku_count: 1
     command:
-      - bash scripts/itp/bash/hubert_sd.sh 256 3 4
-#      - bash scripts/itp/bash/hubert_sd.sh 256 4 4
+      - bash scripts/itp/bash/hubert_sd.sh 256 1e-3 4 8
+#      - sleep infinity
 
 # azure blob configuration
 storage:
   data_blob:
     container_name: models
     mount_dir: /datablob
-    storage_account_name: tsstd01eus
+#    storage_account_name: tsstd01eus
+#    storage_account_name: tsstd01scus
+    storage_account_name: tsstd01wus2
     mount_options:
       - -o
       - attr_timeout=240
