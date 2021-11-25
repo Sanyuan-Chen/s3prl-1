@@ -11,15 +11,15 @@ pip install -e ./
 cd /tmp/code/s3prl
 ls
 
-#save_path=/datablob/users/v-sanych/s3prl_models/hubert/se/bs${bs}_lr${lr}_acc${acc}_node${node}
+#save_path=/datablob/users/v-sanych/s3prl_models/hubert/sd/bs${bs}_lr${lr}_acc${acc}_node${node}
 #model_path=/datablob/users/v-sanych/pretrained_models/hubert_base_ls960.pt.new
 
-save_path=/datablob/users/v-sanych/s3prl_models/hubert_large/se/bs${bs}_lr${lr}_acc${acc}_node${node}
+save_path=/datablob/users/v-sanych/s3prl_models/hubert_large/sd/bs${bs}_lr${lr}_acc${acc}_node${node}
 model_path=/datablob/users/v-sanych/pretrained_models/hubert_large_ll60k.pt
 
 mkdir -p ${save_path}
 python3 -m torch.distributed.launch --nproc_per_node ${node} run_downstream.py  \
-  -n hubert_large/se/bs${bs}_lr${lr}_acc${acc}_node${node}  \
+  -n hubert_large/sd/bs${bs}_lr${lr}_acc${acc}_node${node}  \
   -p ${save_path}  \
   -o "config.downstream_expert.loaderrc.train_batchsize=${bs_per_node},,config.downstream_expert.loaderrc.eval_batchsize=${bs_per_node},,config.optimizer.lr=${lr},,config.runner.gradient_accumulate_steps=${acc}"  \
   -c ./downstream/diarization/config.yaml  \
