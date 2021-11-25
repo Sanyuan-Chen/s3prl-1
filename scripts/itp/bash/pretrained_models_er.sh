@@ -25,7 +25,7 @@ mkdir -p ${save_path}
 python3 -m torch.distributed.launch --nproc_per_node ${node} run_downstream.py \
   -n ${model_name}/er/fold${fold}_bs${bs}_lr${lr}_acc${acc}_node${node}  \
   -p ${save_path}  \
-  -o "config.downstream_expert.loaderrc.train_batchsize=${bs_per_node},,config.downstream_expert.loaderrc.eval_batchsize=${bs_per_node},,config.optimizer.lr=${lr},,config.runner.gradient_accumulate_steps=${acc},,config.downstream_expert.datarc.test_fold='fold${fold}'"  \
+  -o "config.downstream_expert.datarc.train_batch_size=${bs_per_node},,config.downstream_expert.datarc.eval_batch_size=${bs_per_node},,config.optimizer.lr=${lr},,config.runner.gradient_accumulate_steps=${acc},,config.downstream_expert.datarc.test_fold='fold${fold}'"  \
   --downstream_variant fold${fold} \
   -c ./downstream/emotion/config.yaml  \
   -m train  \
