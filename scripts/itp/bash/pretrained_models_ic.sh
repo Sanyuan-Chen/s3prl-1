@@ -23,7 +23,7 @@ mkdir -p ${save_path}
 python3 -m torch.distributed.launch --nproc_per_node ${node} run_downstream.py  \
   -n ${model_name}/ic/bs${bs}_lr${lr}_acc${acc}_node${node}  \
   -p ${save_path}  \
-  -o "config.downstream_expert.loaderrc.train_batchsize=${bs_per_node},,config.downstream_expert.loaderrc.eval_batchsize=${bs_per_node},,config.optimizer.lr=${lr},,config.runner.gradient_accumulate_steps=${acc}"  \
+  -o "config.downstream_expert.datarc.train_batch_size=${bs_per_node},,config.downstream_expert.datarc.eval_batch_size=${bs_per_node},,config.optimizer.lr=${lr},,config.runner.gradient_accumulate_steps=${acc}"  \
   -c ./downstream/fluent_commands/config.yaml  \
   -m train  \
   -u hubert_local  \
