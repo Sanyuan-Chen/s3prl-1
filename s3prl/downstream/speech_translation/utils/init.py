@@ -37,6 +37,7 @@ from .transpose_last import TransposeLast
 from .unfold import unfold1d
 from .transformer_layer import TransformerDecoderLayer, TransformerEncoderLayer
 from .vggblock import VGGBlock
+from .ctc_prefix_score import CTCPrefixScore
 
 __all__ = [
     "AdaptiveInput",
@@ -77,4 +78,5 @@ __all__ = [
     "TransposeLast",
     "VGGBlock",
     "unfold1d",
+    "CTCPrefixScore",
 ]

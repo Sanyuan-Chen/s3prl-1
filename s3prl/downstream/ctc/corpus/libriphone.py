@@ -1,7 +1,8 @@
 from tqdm import tqdm
 from pathlib import Path
 from collections import defaultdict
-from os.path import join, getsize, isfile
+from os.path import join, getsize, isfile, exists
+import json
 from joblib import Parallel, delayed
 from torch.utils.data import Dataset
 
@@ -15,7 +16,7 @@ def parse_lexicon(line, tokenizer):
 
 
 def read_text(file, word2phonemes, tokenizer):
-    '''Get transcription of target wave file, 
+    '''Get transcription of target wave file,
        it's somewhat redundant for accessing each txt multiplt times,
        but it works fine with multi-thread'''
     src_file = '-'.join(file.split('-')[:-1])+'.trans.txt'
@@ -59,10 +60,19 @@ class LibriPhoneDataset(Dataset):
         # List all wave files
         file_list = []
         for s in split:
-            split_list = list(Path(join(path, s)).rglob("*.flac"))
+            cache_path = f"{join(path, s)}.split_list_cache"
+            if exists(cache_path):
+                split_list = json.load(open(cache_path, 'r'))
+                split_list = [Path(i) for i in split_list]
+                print(f"loaded split_list from {cache_path}")
+            else:
+                split_list = list(Path(join(path, s)).rglob("*.flac"))
+                split_list_tmp = [str(i) for i in split_list]
+                json.dump(split_list_tmp, open(cache_path, 'w'))
+                print(f"save split_list to {cache_path}")
             assert len(split_list) > 0, "No data found @ {}".format(join(path,s))
             file_list += split_list
-        
+
         text = []
         print('word -> phonemes')
         for f in file_list:
@@ -71,7 +81,7 @@ class LibriPhoneDataset(Dataset):
 
         self.file_list, self.text = zip(*[(f_name, txt)
                                           for f_name, txt in sorted(zip(file_list, text), reverse=not ascending, key=lambda x:len(x[1]))])
-    
+
     def __getitem__(self, index):
         if self.bucket_size > 1:
             index = min(len(self.file_list)-self.bucket_size, index)
