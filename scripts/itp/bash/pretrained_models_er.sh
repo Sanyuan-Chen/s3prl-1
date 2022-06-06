@@ -37,8 +37,10 @@ python3 -m torch.distributed.launch --nproc_per_node ${node} run_downstream.py \
 for (( i = 1; i < 6; i++ )); do
 
 save_path=/datablob/users/v-sanych/s3prl_models/${model_name}/er/fold${i}_bs${bs}_lr${lr}_acc${acc}_node${node}
+save_path_total=/datablob/users/v-sanych/s3prl_models/${model_name}/er/fold1_bs${bs}_lr${lr}_acc${acc}_node${node}
 echo model_path | tee -a ${save_path}/evaluate_results.txt
 
 python3 run_downstream.py -m evaluate -e ${save_path}/dev-best.ckpt  2>&1 | tee -a ${save_path}/evaluate_results.txt
+python3 run_downstream.py -m evaluate -e ${save_path}/dev-best.ckpt  2>&1 | tee -a ${save_path_total}/evaluate_results_total.txt
 
 done

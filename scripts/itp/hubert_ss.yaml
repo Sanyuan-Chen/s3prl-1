@@ -4,15 +4,15 @@ description: PhillyTools ConfigFile for s3prl
 target:
 #  name: itpeastusv100cl
 #  name: itpeusp100cl
-  name: itpscusv100cl
+#  name: itpscusv100cl
 #  name: itp-v100-scus-2
-#  name: itp-v100-wus2
+  name: itp-v100-wus2
 #  name: itpeusp40cl
 #  name: itp-p40-eus-01
   service: amlk8s
-  vc: resrchvc
+#  vc: resrchvc
 #  vc: speech-itp-ahuna
-#  vc: speech-itp-am-e2e
+  vc: speech-itp-am-e2e
 #  vc: speech-itp-default
 #  queue: bonus
 
@@ -24,19 +24,25 @@ environment:
 code:
   local_dir: .
 
-# amlt run .\scripts\itp\hubert_ss.yaml hubert_ss_lr1e4 -y
+# amlt run .\scripts\itp\hubert_ss.yaml hubert_large_ss_lr1e5 -y
 
 # job configuration
 jobs:
   - name: training
     sku: G8
-#    sku: G4
+#    sku: G1
     sku_count: 1
     command:
-      # hubert base
+      - bash scripts/itp/bash/hubert_ss.sh 64 1e-5 1 4
+#      - bash scripts/itp/bash/hubert_ss.sh 64 1e-4 1 4
 #      - bash scripts/itp/bash/hubert_ss.sh 64 1e-3 1 4
-      # hubert large
-      - bash scripts/itp/bash/hubert_ss.sh 64 1e-3 1 8
+#      - bash scripts/itp/bash/hubert_ss.sh 64 1e-6 1 4
+#      - bash scripts/itp/bash/hubert_ss.sh 64 1e-1 1 4
+#      - bash scripts/itp/bash/hubert_ss.sh 64 1e-2 1 4
+#      - bash scripts/itp/bash/hubert_ss.sh 64 1e-3 1 4
+#      - bash scripts/itp/bash/hubert_ss.sh 64 1e-4 1 4
+#      - bash scripts/itp/bash/hubert_ss.sh 16 1e-4 1 1
+#      - sleep infinity
 
 # azure blob configuration
 storage:
@@ -44,8 +50,8 @@ storage:
     container_name: models
     mount_dir: /datablob
 #    storage_account_name: tsstd01eus
-    storage_account_name: tsstd01scus
-#    storage_account_name: tsstd01wus2
+#    storage_account_name: tsstd01scus
+    storage_account_name: tsstd01wus2
     mount_options:
       - -o
       - attr_timeout=240

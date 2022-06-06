@@ -26,8 +26,8 @@ jobs:
     sku: G1
     sku_count: 1
     command:
-      - bash scripts/itp/submission.yaml hubert_models WavLM-Large-More
-#      - sleep infinity
+      - bash scripts/itp/bash/submission.sh
+      - sleep infinity
 
 # azure blob configuration
 storage:

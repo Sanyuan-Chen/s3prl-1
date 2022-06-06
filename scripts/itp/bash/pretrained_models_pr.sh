@@ -10,6 +10,8 @@ bs_per_node=$((bs / node / acc))
 
 pip install -e ./
 pip install torch_complex
+sudo rm -r /tmp/code/code
+ls /tmp/code/code
 cp -r /datablob/users/v-sanych/${model_dir}/${model_name}/code .
 cd code
 sudo pip install --editable ./

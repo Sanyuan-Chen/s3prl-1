@@ -10,9 +10,15 @@ bs_per_node=$((bs / node / acc))
 
 sudo pip install -e ./
 sudo pip install torch_complex
+sudo rm -r /tmp/code/code
+ls /tmp/code/code
 cp -r /datablob/users/v-sanych/${model_dir}/${model_name}/code .
 cd code
-sudo sudo pip install --editable ./
+sudo rm -r /fairseq
+sudo python setup.py install
+#sudo pip install --editable ./
+#sudo pip install transformers==4.13.0
+sudo pip install huggingface-hub==0.2.1
 cd /tmp/code/s3prl
 ls
 
