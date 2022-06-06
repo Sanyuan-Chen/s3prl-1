@@ -25,15 +25,76 @@ code:
   local_dir: .
 
 # job configuration
-  # amlt run .\scripts\itp\pretrained_models_qbe.yaml pretrained_models_qbe_mn_hubert_pretrain_base_iter3_94k_mnp0_mp02_grep_1200kstep_1025k -y
+  # amlt run .\scripts\itp\pretrained_models_qbe.yaml pretrained_models_qbe_phf_char_zhuoyuan   -y
 jobs:
   - name: training
     sku: G1
     sku_count: 1
     command:
       # wavlm base+
-      - bash scripts/itp/bash/pretrained_models_qbe.sh hubert_models mn_hubert_pretrain_base_iter3_94k_mnp0_mp02_grep_1200kstep_1025k 12
+      - bash scripts/itp/bash/pretrained_models_qbe.sh hubert_models phf_char_zhuoyuan    12
+#      - bash scripts/itp/bash/pretrained_models_qbe.sh hubert_models da_hubert_pretrain_base_iter2_mnp01_mp01_rp01_sp1    12
+#      - bash scripts/itp/bash/pretrained_models_qbe.sh model/data2vec da_data2vec_960h    12
+#      - bash scripts/itp/bash/pretrained_models_qbe.sh hubert_models da_hubert_pretrain_base_iter3_94k_mnp01_mp01_rp01_sp1_grep    12
+#      - bash scripts/itp/bash/pretrained_models_qbe.sh model/data2vec el_mix_data2vec_94k_pl8_12_pw1_1    12
+#      - bash scripts/itp/bash/pretrained_models_qbe.sh model/data2vec el_data2vec_960h_pl8_12_pw1_1    12
+#      - bash scripts/itp/bash/pretrained_models_qbe.sh model/data2vec el_data2vec_960h_pl8_12_pw1_1_398kstep    12
+#      - bash scripts/itp/bash/pretrained_models_qbe.sh hubert_models mn_dm_hubert_pretrain_base_iter3_94k_mnp05_mp02_grep_e12_d2_stft2    14
+#      - bash scripts/itp/bash/pretrained_models_qbe.sh hubert_models mn_dm_hubert_pretrain_base_iter3_94k_mnp05_mp02_grep_e12_d2_fbank    14
+#      - bash scripts/itp/bash/pretrained_models_qbe.sh hubert_models joint_pretrain_train_960_phn_sharevocab_norep_1_0.1_60k_fixbug_2    12
+#      - bash scripts/itp/bash/pretrained_models_qbe.sh hubert_models joint_pretrain_train_960_phn_sharevocab_norep_1_0.1_60k_fixbug    12
+#      - bash scripts/itp/bash/pretrained_models_qbe.sh hubert_models mn_kl_hubert_pretrain_base_iter3_94k_mnp01_mp02_grep_qd256_qn100_qt01    12
+#      - bash scripts/itp/bash/pretrained_models_qbe.sh hubert_models mn_io_hubert_pretrain_base_iter3_94k_mnp01_mp02_il8_q500_256_grep    12
+#      - bash scripts/itp/bash/pretrained_models_qbe.sh model/data2vec mix_data2vec_94k    12
+#      - bash scripts/itp/bash/pretrained_models_qbe.sh model/data2vec data2vec_960h_devclean_ziyang    12
+#      - bash scripts/itp/bash/pretrained_models_qbe.sh hubert_models mn_hubert_pretrain_base_iter3_94k_mnp01_mp02_grep_data2vec_config_mt2.8m    12
+#      - bash scripts/itp/bash/pretrained_models_qbe.sh hubert_models joint_pretrain_train_960_phn_sharevocab_norep_1_0.1_60k    12
+#      - bash scripts/itp/bash/pretrained_models_qbe.sh hubert_models chunk_one_million_small_online_model_frame_rate_40    12
+#      - bash scripts/itp/bash/pretrained_models_qbe.sh hubert_models mn_hubert_pretrain_small2_iter3_94k_mnp05_mp02_grep_mt2800k_step600k    12
+#      - bash scripts/itp/bash/pretrained_models_qbe.sh hubert_models mn_hubert_80ms_pretrain_base_iter3_94k_mnp05_mp02_grep_mt2800k_step600k    12
+#      - bash scripts/itp/bash/pretrained_models_qbe.sh hubert_models mn_hubert_pretrain_small_iter3_94k_mnp05_mp02_grep_mt2800k_step600k    12
+#      - bash scripts/itp/bash/pretrained_models_qbe.sh hubert_models hubert_base_trans_vqvae_label    12
+#      - bash scripts/itp/bash/pretrained_models_qbe.sh hubert_models hubert_base_cnn_vqvae_label    12
+#      - bash scripts/itp/bash/pretrained_models_qbe.sh hubert_models mn_hubert_pretrain_base_iter2_mnp01_mp02_grep_pseudo_phone_label    12
+#      - bash scripts/itp/bash/pretrained_models_qbe.sh hubert_models mn_onl_hubert_pretrain_base_iter3_1m_mnp05_mp02_q500_256_grep_10m_per_epoch_1200kstep    12
+#      - bash scripts/itp/bash/pretrained_models_qbe.sh hubert_models mn_hubert_pretrain_base_r9_phone    12
+#      - bash scripts/itp/bash/pretrained_models_qbe.sh hubert_models hubert_base_relative_hybrid100h_ali    12
+#      - bash scripts/itp/bash/pretrained_models_qbe.sh hubert_models mn_onl_hubert_pretrain_base_iter3_1m_sample_mnp05_mp02_q500_256_grep_10m_per_epoch_1200kstep    12
+#      - bash scripts/itp/bash/pretrained_models_qbe.sh hubert_models mn_onl_hubert_pretrain_base_iter3_94k_mnp01_mp02_q500_256_info_grep    12
+#      - bash scripts/itp/bash/pretrained_models_qbe.sh hubert_models mn_onl_hubert_pretrain_base_iter3_94k_mnp01_mp02_grep    12
+#      - bash scripts/itp/bash/pretrained_models_qbe.sh hubert_models online_hubert_500_256_mask0.8_400k    12
+#      - bash scripts/itp/bash/pretrained_models_qbe.sh hubert_models hubert_base_phone    12
+#      - bash scripts/itp/bash/pretrained_models_qbe.sh hubert_models hubert_pretrain_base_960h_vq_mse_hubert_nomask_label    12
+#      - bash scripts/itp/bash/pretrained_models_qbe.sh hubert_models online_hubert_8192_16_mask0.8_400k    12
+#      - bash scripts/itp/bash/pretrained_models_qbe.sh hubert_models mn_mse_hubert_pretrain_base_iter3_94k_grep_fbank_mp02_mnp05_lr100    12
+#      - bash scripts/itp/bash/pretrained_models_qbe.sh hubert_models mn_mse_hubert_pretrain_base_iter3_60k_grep_fbank_ml1_mp1_mnp1_lr100    12
+#      - bash scripts/itp/bash/pretrained_models_qbe.sh hubert_models mn_mse_hubert_pretrain_base_iter3_94k_grep_fbank_ml1_mp1_mnp1_lr100    12
+#      - bash scripts/itp/bash/pretrained_models_qbe.sh hubert_models mse_hubert_pretrain_base_960h_fbank_400k    12
+#      - bash scripts/itp/bash/pretrained_models_qbe.sh hubert_models mn_mse_hubert_pretrain_base_960h_fbank_ml1_mp1_mnp1_400k    12
+#      - bash scripts/itp/bash/pretrained_models_qbe.sh hubert_models mn_mse_hubert_pretrain_base_iter3_94k_grep_fbank_mp02_mnp05    12
+#      - bash scripts/itp/bash/pretrained_models_qbe.sh hubert_models hubert_pretrain_base_960h_mfcc_label_k500    12
+#      - bash scripts/itp/bash/pretrained_models_qbe.sh hubert_models mn_mse_hubert_pretrain_base_iter3_94k_grep_fbank_ml1_mp1_mnp1    12
+#      - bash scripts/itp/bash/pretrained_models_qbe.sh hubert_models hubert_pretrain_base_960h_mfcc_label    12
+#      - bash scripts/itp/bash/pretrained_models_qbe.sh hubert_models mn_mse_hubert_pretrain_base_960h_grep_fbank_ml1_mp1_mnp1    12
+#      - bash scripts/itp/bash/pretrained_models_qbe.sh hubert_models mn_hubert_pretrain_base_iter3_94k_mnp01_mp02_grep_bpelabel    12
+#      - bash scripts/itp/bash/pretrained_models_qbe.sh hubert_models mn_hubert_pretrain_base_iter3_94k_mnp1_mp02_grep    12
+#      - bash scripts/itp/bash/pretrained_models_qbe.sh hubert_models mnb_hubert_pretrain_base_iter3_94k_mnp0_mp02_msp05_msrp1_grep    12
+#      - bash scripts/itp/bash/pretrained_models_qbe.sh hubert_models mnb_hubert_pretrain_base_iter3_94k_mnp1_mp07_grep    12
+#      - bash scripts/itp/bash/pretrained_models_qbe.sh hubert_models mnb_hubert_pretrain_base_iter3_94k_mnp1_mp05_grep    12
+#      - bash scripts/itp/bash/pretrained_models_qbe.sh hubert_models mn_hubert_pretrain_base_iter3_94k_mnp1_mp07_grep   12
+#      - bash scripts/itp/bash/pretrained_models_qbe.sh hubert_models mn_hubert_pretrain_base_iter3_94k_mnp1_mp05_grep  12
+#      - bash scripts/itp/bash/pretrained_models_qbe.sh hubert_models mnb_hubert_pretrain_base_iter3_94k_mnp1_mp02_grep 12
+#      - bash scripts/itp/bash/pretrained_models_qbe.sh hubert_models mnb_hubert_pretrain_base_iter3_94k_mnp0_mp02_msp05_msrp0_grep 12
+#      - bash scripts/itp/bash/pretrained_models_qbe.sh hubert_models mnb_hubert_pretrain_base_iter3_94k_mnp05_mp02_msp0_msrp0_grep 12
+#      - bash scripts/itp/bash/pretrained_models_qbe.sh hubert_models mnb_hubert_pretrain_base_iter3_94k_mnp0_mp02_msp05_msrp05_grep 12
+#      - bash scripts/itp/bash/pretrained_models_qbe.sh hubert_models mn_hubert_pretrain_base_iter3_94k_mnp05_mp02_grep 12
+#      - bash scripts/itp/bash/pretrained_models_qbe.sh hubert_models mnb_hubert_pretrain_base_iter3_94k_mnp0_mp02_grep 12
+#      - bash scripts/itp/bash/pretrained_models_qbe.sh hubert_models mn_hubert_pretrain_base_iter3_94k_mnp0_mp02_grep_1200kstep_1025k 12
       # wavlm large
+#      - bash scripts/itp/bash/pretrained_models_qbe.sh hubert_models mn_hubert_pretrain_large_epoch_50_94k_r9_mnp05_mp02_grep_10m_per_epoch_700kstep 24
+#      - bash scripts/itp/bash/pretrained_models_qbe.sh hubert_models mnb_hubert_pretrain_large_epoch_50_94k_r9_mnp05_mp02_grep_10m_per_epoch_700kstep 24
+#      - bash scripts/itp/bash/pretrained_models_qbe.sh hubert_models mn_hubert_pretrain_large_94k_mnp01_mp02_grep_700k_475kstep_conti_700k_attrelax 24
+#      - bash scripts/itp/bash/pretrained_models_qbe.sh hubert_models mn_hubert_pretrain_large_94k_mnp0_mp02_grep_700k_600kstep_conti_attrelax 24
 #      - bash scripts/itp/bash/pretrained_models_qbe.sh hubert_models mn_hubert_pretrain_large_94k_mnp0_mp02_grep_700k_600kstep_conti_620 24
 
 # azure blob configuration
@@ -53,3 +114,9 @@ storage:
       - allow_other
       - --log-level=LOG_WARNING
       - --file-cache-timeout-in-seconds=3600
+  blob_model:
+    container_name: models
+    mount_dir: /modelblob
+    storage_account_name: tsstd01eus
+#    storage_account_name: tsstd01scus
+#    storage_account_name: tsstd01wus2

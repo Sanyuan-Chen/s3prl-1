@@ -7,6 +7,7 @@ lr=$4
 acc=$5
 node=$6
 bs_per_node=$((bs / node / acc))
+feature_selection=hidden_state_$7
 
 pip install -e ./
 pip install torch_complex
@@ -18,21 +19,20 @@ sudo pip install --editable ./
 cd /tmp/code/s3prl
 ls
 
-save_path=/datablob/users/v-sanych/s3prl_models/${model_name}/sf/bs${bs}_lr${lr}_acc${acc}_node${node}
+save_path=/datablob/users/v-sanych/s3prl_models/${model_name}/pr/${feature_selection}/bs${bs}_lr${lr}_acc${acc}_node${node}
 model_path=/datablob/users/v-sanych/${model_dir}/${model_name}/checkpoint_last.pt
 
 mkdir -p ${save_path}
 python3 -m torch.distributed.launch --nproc_per_node ${node} run_downstream.py  \
-  -n ${model_name}/sf/bs${bs}_lr${lr}_acc${acc}_node${node}  \
+  -n ${model_name}/pr/${feature_selection}/bs${bs}_lr${lr}_acc${acc}_node${node}  \
   -p ${save_path}  \
   -o "config.downstream_expert.corpus.batch_size=${bs_per_node},,config.optimizer.lr=${lr},,config.runner.gradient_accumulate_steps=${acc}"  \
-  -c ./downstream/ctc/snips.yaml  \
+  -c ./downstream/ctc/libriphone.yaml  \
   -m train  \
   -u hubert_local  \
   -k ${model_path} \
   -d ctc  \
+  -s ${feature_selection} \
   --verbose -a 2>&1 | tee -a ${save_path}/training_log.txt
-
-# python3 run_downstream.py -n ExpName -m train -u fbank -d ctc -c downstream/ctc/snips.yaml
 
 python3 run_downstream.py -m evaluate -e ${save_path}/dev-best.ckpt 2>&1 | tee -a ${save_path}/evaluate_results.txt

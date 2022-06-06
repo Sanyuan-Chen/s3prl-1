@@ -16,9 +16,14 @@ sudo pip install --editable ./
 cd /tmp/code/s3prl
 ls
 
+# sp_fairseq
 cp /tmp/code/s3prl/downstream/speech_translation/utils/init.py /tmp/code/code/fairseq/modules/__init__.py
 cp /tmp/code/s3prl/downstream/speech_translation/utils/transformer_layer.py /tmp/code/code/fairseq/modules/transformer_layer.py
+cp /tmp/code/s3prl/downstream/speech_translation/utils/ctc_prefix_score.py /tmp/code/code/fairseq/modules/ctc_prefix_score.py
 cp /tmp/code/s3prl/downstream/speech_translation/utils/multihead_attention_fairseq.py /tmp/code/code/fairseq/modules/multihead_attention_fairseq.py
+
+# new fairseq
+#cp /tmp/code/s3prl/downstream/speech_translation/utils/speech_to_text_dataset.py /tmp/code/code/fairseq/data/audio/speech_to_text_dataset.py
 
 
 save_path=/datablob/users/v-sanych/s3prl_models/${model_name}/st/bs${bs}_lr${lr}_acc${acc}_node${node}

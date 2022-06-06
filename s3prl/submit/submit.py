@@ -198,7 +198,8 @@ if args.sd is not None:
 
     tgt_dir = predict_dir / task_name
     tgt_predict_dir = tgt_dir / "scoring" / "predictions"
-    copytree(src_dir, tgt_predict_dir, dirs_exist_ok=True)
+    os.system(f"cp -p -r {src_dir} {tgt_dir}")
+    # copytree(src_dir, tgt_dir, dirs_exist_ok=True)
 
     upstream_rate = expdir / "frame_shift"
     if upstream_rate.is_file():
