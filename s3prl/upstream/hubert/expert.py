@@ -85,6 +85,13 @@ class UpstreamExpert(UpstreamBase):
                         lambda input, output: output[0].transpose(0, 1),
                     )
 
+            def postprocess(xs):
+                names, hiddens = zip(*xs)
+                unpad_len = min([hidden.size(1) for hidden in hiddens])
+                hiddens = [hidden[:, :unpad_len, :] for hidden in hiddens]
+                return list(zip(names, hiddens))
+            self.hook_postprocess = postprocess
+
     def get_downsample_rates(self, key: str) -> int:
         if hasattr(self.model, "feature_stride"):
             print(f"The downsample rate of model is {self.model.feature_stride}")

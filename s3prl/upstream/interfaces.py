@@ -138,6 +138,7 @@ class Featurizer(nn.Module):
         feature_selection: str = "hidden_states",
         upstream_device: str = "cuda",
         layer_selection: int = None,
+        normalize: bool = False,
         **kwargs,
     ):
         super().__init__()
@@ -166,6 +167,7 @@ class Featurizer(nn.Module):
                 raise ValueError
         self.feature_selection = feature_selection
         self.layer_selection = layer_selection
+        self.normalize = normalize
 
         feature = self._select_feature(paired_features)
         if isinstance(feature, (list, tuple)):
@@ -234,6 +236,10 @@ class Featurizer(nn.Module):
             assert shape_diff < 2
             feature = [f[:, :-shape_diff] if i < len(feature) - 1 else f for i, f in enumerate(feature)]
         stacked_feature = torch.stack(feature, dim=0)
+
+        if self.normalize:
+            stacked_feature = F.layer_norm(
+                stacked_feature, (stacked_feature.shape[-1],))
 
         _, *origin_shape = stacked_feature.shape
         stacked_feature = stacked_feature.view(self.layer_num, -1)
