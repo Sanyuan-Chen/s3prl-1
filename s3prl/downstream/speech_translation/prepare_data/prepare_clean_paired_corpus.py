@@ -34,7 +34,7 @@ if __name__ == '__main__':
         assert args.min >= 1, "minimum length should >= 1 with ratio test"
     
     lines = []
-    with open(args.input_tsv, 'r') as f:
+    with open(args.input_tsv, 'r', encoding='utf-8') as f:
         reader = csv.DictReader(
             f,
             delimiter='\t',
@@ -75,7 +75,7 @@ if __name__ == '__main__':
 
     print(f'remove {len(lines)-len(data)}/{len(lines)} samples')
 
-    with open(args.output_tsv, 'w') as f:
+    with open(args.output_tsv, 'w', encoding='utf-8') as f:
         writer = csv.DictWriter(
             f,
             delimiter='\t',

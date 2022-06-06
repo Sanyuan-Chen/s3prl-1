@@ -1,6 +1,7 @@
 # Copyright (c) Facebook, Inc. All Rights Reserved
 
 import os
+import time
 import math  # noqa
 import editdistance
 from pathlib import Path
@@ -341,8 +342,8 @@ class DownstreamExpert(nn.Module):
         logger.add_scalar(f'asr/{split}-loss', loss, global_step=global_step)
         logger.add_scalar(f'asr/{split}-uer', uer, global_step=global_step)
         logger.add_scalar(f'asr/{split}-wer', wer, global_step=global_step)
-        print(f'{split} uer: {uer}')
-        print(f'{split} wer: {wer}')
+        print(f'{time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())} {split} uer: {uer}')
+        print(f'{time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())} {split} wer: {wer}')
 
         save_names = []
         if split == 'dev-clean' and wer < self.best_score:

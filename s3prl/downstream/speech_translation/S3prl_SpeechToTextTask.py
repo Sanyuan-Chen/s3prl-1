@@ -127,7 +127,7 @@ class S3prl_SpeechToTextDatasetCreator(SpeechToTextDatasetCreator):
         if not op.isfile(tsv_path):
             raise FileNotFoundError(f"Dataset not found: {tsv_path}")
         
-        with open(tsv_path) as f:
+        with open(tsv_path, encoding='utf-8') as f:
             reader = csv.DictReader(
                 f,
                 delimiter="\t",

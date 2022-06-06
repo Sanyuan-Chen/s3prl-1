@@ -38,6 +38,9 @@ def main():
 
     # mix_both, mix_clean, mix_single, noise, s1, s2
     for dset in ["mix_both", "mix_clean", "mix_single", "noise", "s1", "s2"]:
+        if not os.path.exists("{}/{}".format(args.src_dir, dset)):
+            continue
+
         src_dset, tgt_dset = "{}/{}".format(args.src_dir, dset), "{}/{}".format(args.tgt_dir, dset)
         os.makedirs(tgt_dset)
         with open("{}/utt2spk".format(tgt_dset), 'w') as fh:

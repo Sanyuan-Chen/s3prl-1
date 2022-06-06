@@ -1,0 +1,116 @@
+description: PhillyTools ConfigFile for s3prl
+
+# AML 
+target:
+#  name: itpseasiav100cl
+#  name: itpeastusv100cl
+#  name: itpeusp100cl
+#  name: itpscusv100cl
+#  name: itp-v100-scus
+#  name: itplabrr1cl1
+  name: itp-v100-wus2
+#  name: itpeusp40cl
+#  name: itp-p40-eus-01
+  service: amlk8s
+#  vc: resrchvc
+#  vc: speech-itp-ahuna
+  vc: speech-itp-am-e2e
+#  vc: speech-itp-default
+#  queue: bonus
+
+# docker environment
+environment:
+  image: sanyuanchen/s3prl_v2:s3prl_v2
+
+# code dir
+code:
+  local_dir: .
+
+# job configuration
+  # amlt run .\scripts\itp\pretrained_models_sid.yaml pretrained_models_sid_phf_char_zhuoyuan -y
+
+jobs:
+  - name: training
+    sku: G8
+#    sku: G1
+    sku_count: 1
+    command:
+      # recommended hyperparamters: bs 512, lr 1e-1,  acc 1, node 8
+
+      # wavlm base+
+      - bash scripts/itp/bash/pretrained_models_sid.sh hubert_models phf_char_zhuoyuan 512 1e-1 1 8
+#      - bash scripts/itp/bash/pretrained_models_sid.sh model/data2vec da_data2vec_960h 512 1e-1 1 8
+#      - bash scripts/itp/bash/pretrained_models_sid.sh hubert_models da_hubert_pretrain_base_iter3_94k_mnp01_mp01_rp01_sp1_grep 512 1e-1 1 8
+#      - bash scripts/itp/bash/pretrained_models_sid.sh hubert_models mn_dm_hubert_pretrain_base_iter3_94k_mnp05_mp02_grep_e12_d2_stft2 512 1e-1 1 8
+#      - bash scripts/itp/bash/pretrained_models_sid.sh hubert_models mn_dm_hubert_pretrain_base_iter3_94k_mnp05_mp02_grep_e12_d2_fbank 512 1e-1 1 8
+#      - bash scripts/itp/bash/pretrained_models_sid.sh hubert_models joint_pretrain_train_960_phn_sharevocab_norep_1_0.1_60k_fixbug_2 512 1e-1 1 8
+#      - bash scripts/itp/bash/pretrained_models_sid.sh hubert_models joint_pretrain_train_960_phn_sharevocab_norep_1_0.1_60k_fixbug 512 1e-1 1 8
+#      - bash scripts/itp/bash/pretrained_models_sid.sh hubert_models mn_kl_hubert_pretrain_base_iter3_94k_mnp01_mp02_grep_qd256_qn100_qt01 512 1e-1 1 8
+#      - bash scripts/itp/bash/pretrained_models_sid.sh hubert_models mn_io_hubert_pretrain_base_iter3_94k_mnp01_mp02_il8_q500_256_grep 512 1e-1 1 8
+#      - bash scripts/itp/bash/pretrained_models_sid.sh model/data2vec mix_data2vec_94k 512 1e-1 1 8
+#      - bash scripts/itp/bash/pretrained_models_sid.sh model/data2vec data2vec_960h_devclean_ziyang 512 1e-1 1 8
+#      - bash scripts/itp/bash/pretrained_models_sid.sh hubert_models mn_hubert_pretrain_base_iter3_94k_mnp01_mp02_grep_data2vec_config_mt2.8m 512 1e-1 1 8
+#      - bash scripts/itp/bash/pretrained_models_sid.sh hubert_models chunk_one_million_small_online_model_frame_rate_40 512 1e-1 1 8
+#      - bash scripts/itp/bash/pretrained_models_sid.sh hubert_models mn_hubert_pretrain_small2_iter3_94k_mnp05_mp02_grep_mt2800k_step600k 512 1e-1 1 8
+#      - bash scripts/itp/bash/pretrained_models_sid.sh hubert_models mn_hubert_80ms_pretrain_base_iter3_94k_mnp05_mp02_grep_mt2800k_step600k 512 1e-1 1 8
+#      - bash scripts/itp/bash/pretrained_models_sid.sh hubert_models mn_hubert_pretrain_small_iter3_94k_mnp05_mp02_grep_mt2800k_step600k 512 1e-1 1 8
+#      - bash scripts/itp/bash/pretrained_models_sid.sh hubert_models mn_hubert_pretrain_base_iter2_mnp01_mp02_grep_pseudo_phone_label 512 1e-1 1 8
+#      - bash scripts/itp/bash/pretrained_models_sid.sh hubert_models mn_onl_hubert_pretrain_base_iter3_1m_mnp05_mp02_q500_256_grep_10m_per_epoch_1200kstep 512 1e-1 1 8
+#      - bash scripts/itp/bash/pretrained_models_sid.sh hubert_models mn_hubert_pretrain_base_r9_phone 512 1e-1 1 8
+#      - bash scripts/itp/bash/pretrained_models_sid.sh hubert_models hubert_base_relative_hybrid100h_ali 512 1e-1 1 8
+#      - bash scripts/itp/bash/pretrained_models_sid.sh hubert_models mn_onl_hubert_pretrain_base_iter3_1m_sample_mnp05_mp02_q500_256_grep_10m_per_epoch_1200kstep 512 1e-1 1 8
+#      - bash scripts/itp/bash/pretrained_models_sid.sh hubert_models mn_onl_hubert_pretrain_base_iter3_94k_mnp01_mp02_q500_256_info_grep 512 1e-1 1 8
+#      - bash scripts/itp/bash/pretrained_models_sid.sh hubert_models mn_onl_hubert_pretrain_base_iter3_94k_mnp01_mp02_grep 512 1e-1 1 8
+#      - bash scripts/itp/bash/pretrained_models_sid.sh hubert_models hubert_pretrain_base_960h_vq_mse_hubert_nomask_label 512 1e-1 1 8
+#      - bash scripts/itp/bash/pretrained_models_sid.sh hubert_models online_hubert_500_256_mask0.8_400k 512 1e-1 1 8
+#      - bash scripts/itp/bash/pretrained_models_sid.sh hubert_models hubert_base_phone 512 1e-1 1 8
+#      - bash scripts/itp/bash/pretrained_models_sid.sh hubert_models online_hubert_8192_16_mask0.8_400k 512 1e-1 1 8
+#      - bash scripts/itp/bash/pretrained_models_sid.sh hubert_models mn_mse_hubert_pretrain_base_iter3_94k_grep_fbank_mp02_mnp05_lr100 512 1e-1 1 8
+#      - bash scripts/itp/bash/pretrained_models_sid.sh hubert_models mn_mse_hubert_pretrain_base_iter3_60k_grep_fbank_ml1_mp1_mnp1_lr100 512 1e-1 1 8
+#      - bash scripts/itp/bash/pretrained_models_sid.sh hubert_models mn_mse_hubert_pretrain_base_iter3_94k_grep_fbank_ml1_mp1_mnp1_lr100 512 1e-1 1 8
+#      - bash scripts/itp/bash/pretrained_models_sid.sh hubert_models mse_hubert_pretrain_base_960h_fbank_400k 512 1e-1 1 8
+#      - bash scripts/itp/bash/pretrained_models_sid.sh hubert_models mn_mse_hubert_pretrain_base_960h_fbank_ml1_mp1_mnp1_400k 512 1e-1 1 8
+#      - bash scripts/itp/bash/pretrained_models_sid.sh hubert_models hubert_pretrain_base_960h_mfcc_label_k500 512 1e-1 1 8
+#      - bash scripts/itp/bash/pretrained_models_sid.sh hubert_models mn_mse_hubert_pretrain_base_960h_grep_fbank_ml1_mp1_mnp1 512 1e-1 1 8
+#      - bash scripts/itp/bash/pretrained_models_sid.sh hubert_models mn_mse_hubert_pretrain_base_iter3_94k_grep_fbank_ml1_mp1_mnp1 512 1e-1 1 8
+#      - bash scripts/itp/bash/pretrained_models_sid.sh hubert_models hubert_pretrain_base_960h_mfcc_label 512 1e-1 1 8
+#      - bash scripts/itp/bash/pretrained_models_sid.sh hubert_models mn_hubert_pretrain_base_iter3_94k_mnp01_mp02_grep_bpelabel 512 1e-1 1 8
+#      - bash scripts/itp/bash/pretrained_models_sid.sh hubert_models mnb_hubert_pretrain_base_iter3_94k_mnp0_mp02_msp05_msrp1_grep 512 1e-1 1 8
+#      - bash scripts/itp/bash/pretrained_models_sid.sh hubert_models mnb_hubert_pretrain_base_iter3_94k_mnp0_mp02_msp05_msrp0_grep 512 1e-1 1 8
+#      - bash scripts/itp/bash/pretrained_models_sid.sh hubert_models mnb_hubert_pretrain_base_iter3_94k_mnp05_mp02_msp0_msrp0_grep 512 1e-1 1 8
+#      - bash scripts/itp/bash/pretrained_models_sid.sh hubert_models mnb_hubert_pretrain_base_iter3_94k_mnp0_mp02_msp05_msrp05_grep 512 1e-1 1 8
+#      - bash scripts/itp/bash/pretrained_models_sid.sh hubert_models mnb_hubert_pretrain_base_iter3_94k_mnp0_mp02_grep 512 1e-1 1 8
+#      - bash scripts/itp/bash/pretrained_models_sid.sh hubert_models mn_hubert_pretrain_base_iter3_94k_mnp0_mp02_grep_1200kstep_1025k 512 1e-1 1 8
+
+      # wavlm large
+#      - bash scripts/itp/bash/pretrained_models_sid.sh hubert_models mn_hubert_pretrain_large_epoch_50_94k_r9_mnp05_mp02_grep_10m_per_epoch_700kstep 512 5e-2 1 8
+#      - bash scripts/itp/bash/pretrained_models_sid.sh hubert_models mnb_hubert_pretrain_large_epoch_50_94k_r9_mnp05_mp02_grep_10m_per_epoch_700kstep 512 5e-2 1 8
+#      - bash scripts/itp/bash/pretrained_models_sid.sh hubert_models mn_hubert_pretrain_large_94k_mnp01_mp02_grep_700k_475kstep_conti_700k_attrelax 512 5e-2 1 8
+#      - bash scripts/itp/bash/pretrained_models_sid.sh hubert_models mn_hubert_pretrain_large_94k_mnp0_mp02_grep_700k_600kstep_conti_attrelax 512 5e-2 1 8
+#      - bash scripts/itp/bash/pretrained_models_sid.sh hubert_models mn_hubert_pretrain_large_94k_mnp0_mp02_grep_700k_600kstep_conti_620 512 5e-2 1 8
+
+# azure blob configuration
+storage:
+  data_blob:
+    container_name: models
+    mount_dir: /datablob
+#    storage_account_name: tsstd01eus
+#    storage_account_name: tsstd01scus
+    storage_account_name: tsstd01wus2
+    mount_options:
+      - -o
+      - attr_timeout=240
+      - -o
+      - entry_timeout=240
+      - -o
+      - negative_timeout=120
+      - -o
+      - allow_other
+      - --log-level=LOG_WARNING
+      - --file-cache-timeout-in-seconds=3600
+  blob_model:
+    container_name: models
+    mount_dir: /modelblob
+#    storage_account_name: tsstd01eus
+#    storage_account_name: tsstd01scus
+    storage_account_name: tsstd01wus2

@@ -15,7 +15,7 @@ if __name__ == '__main__':
     args.exp_dir = Path(args.exp_dir)
     hyps, refs = [], []
 
-    with open(args.exp_dir/args.tsv_file, 'r') as f:
+    with open(args.exp_dir/args.tsv_file, 'r', encoding='utf-8') as f:
         reader = csv.DictReader(
             f,
             delimiter='\t',

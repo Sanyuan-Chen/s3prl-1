@@ -20,6 +20,7 @@ from pathlib import Path
 from collections import defaultdict
 
 # -------------#
+import time
 import torch
 import torch.nn as nn
 from torch.utils.data import DataLoader, DistributedSampler
@@ -340,7 +341,7 @@ class DownstreamExpert(nn.Module):
         logger.add_scalar(
             f"diarization/{mode}-der", average_der, global_step=global_step
         )
-        print("mode {} acc {} der {}".format(mode, average_acc, average_der))
+        print("{}: mode {} acc {} der {}".format(time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()), mode, average_acc, average_der))
 
         save_ckpt = []
         if mode == "dev" and average_acc > self.best_score:

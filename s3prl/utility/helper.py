@@ -89,11 +89,15 @@ def override(string, args, config):
 
         if first_field == 'args':
             assert len(remaining) == 1
+            if not hasattr(args, remaining[0]):
+                raise ValueError(f"Invalid args: {key}")
             setattr(args, remaining[0], value)
         elif first_field == 'config':
             target_config = config
             for i, field_name in enumerate(remaining):
                 if i == len(remaining) - 1:
+                    if field_name not in target_config:
+                        raise ValueError(f"Invalid config: {key}")
                     target_config[field_name] = value
                 else:
                     target_config.setdefault(field_name, {})

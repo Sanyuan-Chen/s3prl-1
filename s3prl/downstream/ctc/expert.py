@@ -1,4 +1,5 @@
 import os
+import time
 import math
 import torch
 import random
@@ -96,7 +97,10 @@ class DownstreamExpert(nn.Module):
             ]
             filtered_tokens.append(filtered_token)
         hypothesis = [
-            self.tokenizer.decode(h) for h in filtered_tokens
+            # self.tokenizer.decode(h) for h in filtered_tokens
+            self.tokenizer.decode(h) for h in pred_tokens
+            # self.tokenizer.decode(h, ignore_repeat=True) for h in pred_tokens
+            # self.tokenizer.decode(h, ignore_repeat=True) for h in filtered_tokens
         ]
         groundtruth = [self.tokenizer.decode(g.tolist()) for g in labels]
 
@@ -120,7 +124,7 @@ class DownstreamExpert(nn.Module):
 
         save_names = []
         for key, value in results.items():
-            print(f"{split} {key}: {value}")
+            print(f"{time.strftime('%Y-%m-%d %H:%M:%S', time.localtime())} {split} {key}: {value}")
 
             logger.add_scalar(
                 f"{self._get_task_name()}/{split}-{key}", value, global_step=global_step

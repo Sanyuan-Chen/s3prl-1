@@ -40,7 +40,7 @@ def create_sentencepiece(filenames, model_type, vocab_size, output_prefix):
         if s not in {UNK_TOKEN, BOS_TOKEN, EOS_TOKEN, PAD_TOKEN}
     }
 
-    with open(f'{output_prefix}.txt', 'w') as f:
+    with open(f'{output_prefix}.txt', 'w', encoding='utf-8') as f:
         for _, s in sorted(vocab.items(), key=lambda x: x[0]):
             print(f'{s} 1', file=f)
 
@@ -59,7 +59,7 @@ if __name__ == '__main__':
 
     with tempfile.NamedTemporaryFile(mode='w') as src_f:
         with tempfile.NamedTemporaryFile(mode='w') as tgt_f:
-            with open(args.input_tsv, 'r') as f:
+            with open(args.input_tsv, 'r', encoding='utf-8') as f:
                 reader = csv.DictReader(
                     f,
                     delimiter='\t',

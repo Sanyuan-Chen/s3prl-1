@@ -5,7 +5,7 @@ runner:
 
   log_step: 100
   eval_step: 2000
-  save_step: 250
+  save_step: 2000
   max_keep: 1
   eval_dataloaders:
     - dev
@@ -36,7 +36,7 @@ downstream_expert:
     label_smoothing: 0.1
 
   taskrc:
-    data: data/covost_en_de ## set the data folder here
+    data: /datablob/users/v-sanych/s3prl_data/speech_translation/data/covost_en_de ## set the data folder here
     config_yaml: config.yaml
     seed: 1
     use_asr: False

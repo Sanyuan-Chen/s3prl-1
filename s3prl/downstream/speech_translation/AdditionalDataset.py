@@ -10,7 +10,7 @@ class AdditionalDataset:
     def from_tsv(cls, file, key, bpe_tokenizer=None, pre_tokenizer=None):
 
         data = []
-        with open(file, 'r') as file:
+        with open(file, 'r', encoding='utf-8') as file:
             reader = csv.DictReader(file,
                 delimiter="\t",
                 quotechar=None,

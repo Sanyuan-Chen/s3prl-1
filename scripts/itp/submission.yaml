@@ -1,0 +1,50 @@
+description: PhillyTools ConfigFile for s3prl
+
+# AML 
+target:
+#  name: itpeastusv100cl
+#  name: itpeusp100cl
+#  name: itpscusv100cl
+  name: itpeusp40cl
+#  name: itp-p40-eus-01
+  service: amlk8s
+  vc: resrchvc
+#  vc: speech-itp-default
+
+# docker environment
+environment:
+  image: sanyuanchen/s3prl_v2:latest
+
+# code dir
+code:
+  local_dir: .
+
+  # amlt run .\scripts\itp\submission.yaml submission_WavLM-Large -y
+jobs:
+  - name: training
+#    sku: G4
+    sku: G1
+    sku_count: 1
+    command:
+      - bash scripts/itp/bash/submission.sh
+      - sleep infinity
+
+# azure blob configuration
+storage:
+  data_blob:
+    container_name: models
+    mount_dir: /datablob
+    storage_account_name: tsstd01eus
+#    storage_account_name: tsstd01scus
+#    storage_account_name: tsstd01wus2
+    mount_options:
+      - -o
+      - attr_timeout=240
+      - -o
+      - entry_timeout=240
+      - -o
+      - negative_timeout=120
+      - -o
+      - allow_other
+      - --log-level=LOG_WARNING
+      - --file-cache-timeout-in-seconds=3600

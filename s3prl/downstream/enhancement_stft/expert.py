@@ -12,6 +12,7 @@
 ###############
 import os
 import math
+import time
 import random
 import h5py
 import numpy as np
@@ -23,7 +24,8 @@ from pathlib import Path
 # -------------#
 import torch
 import torch.nn as nn
-from torch.utils.data import DataLoader
+from torch.utils.data import DataLoader, DistributedSampler
+from torch.distributed import is_initialized
 from torch.nn.utils.rnn import pack_sequence, pad_sequence
 import torch.nn.functional as F
 
@@ -33,7 +35,7 @@ from .dataset import SeparationDataset
 from asteroid.metrics import get_metrics
 from .loss import MSELoss, SISDRLoss
 
-device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+# device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
 COMPUTE_METRICS = ["si_sdr", "stoi", "pesq"]
 
@@ -163,10 +165,12 @@ class DownstreamExpert(nn.Module):
         self.register_buffer("best_score", torch.ones(1) * -10000)
 
     def _get_train_dataloader(self, dataset):
+        sampler = DistributedSampler(dataset) if is_initialized() else None
         return DataLoader(
             dataset,
             batch_size=self.loaderrc["train_batchsize"],
-            shuffle=True,
+            shuffle=(sampler is None),
+            sampler=sampler,
             num_workers=self.loaderrc["num_workers"],
             drop_last=False,
             pin_memory=True,
@@ -264,7 +268,7 @@ class DownstreamExpert(nn.Module):
 
         # evaluate the enhancement quality of predict sources
         if mode == 'dev' or mode == 'test':
-            predict_stfts = [torch.squeeze(m * source_attr['stft'].to(device)) for m in mask_list]
+            predict_stfts = [torch.squeeze(m * source_attr['stft'].to(m.device)) for m in mask_list]
             predict_stfts_np = [np.transpose(s.data.cpu().numpy()) for s in predict_stfts]
 
             assert len(wav_length) == 1
@@ -274,7 +278,7 @@ class DownstreamExpert(nn.Module):
                 win_length=self.datarc['win_length'], 
                 window=self.datarc['window'], 
                 center=self.datarc['center'],
-                length=wav_length[0])) for stft_mat in predict_stfts_np]
+                length=wav_length[0].cpu().numpy())) for stft_mat in predict_stfts_np]
             predict_srcs_np = np.stack(predict_srcs_np, 0)
             gt_srcs_np = torch.cat(target_wav_list, 0).data.cpu().numpy()
             mix_np = source_wav.data.cpu().numpy()
@@ -370,7 +374,7 @@ class DownstreamExpert(nn.Module):
             for metric in COMPUTE_METRICS:
                 avg_metric = np.mean(records[metric])
                 if mode == "test" or mode == "dev":
-                    print("Average {} of {} utts is {:.4f}".format(metric, len(records[metric]), avg_metric))
+                    print("{} Average {} of {} utts is {:.4f}".format(time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()), metric, len(records[metric]), avg_metric))
                     print(metric, avg_metric, file=eval_result)
 
                 logger.add_scalar(

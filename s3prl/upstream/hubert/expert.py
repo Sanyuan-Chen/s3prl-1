@@ -43,16 +43,47 @@ class UpstreamExpert(UpstreamBase):
             [ckpt]
         )
         self.model = model[0]
+        # if len(self.model.encoder.layers) >= 24 and hasattr(self.model.encoder.layers[23].self_attn, "fp32_attention"):
+        #     self.model.encoder.layers[23].self_attn.fp32_attention = False
+        # if len(self.model.encoder.layers) >= 12 and hasattr(self.model.encoder.layers[11].self_attn, "fp32_attention"):
+        #     self.model.encoder.layers[11].self_attn.fp32_attention = False
+        # for i in range(len(self.model.encoder.layers)):
+        #     if hasattr(self.model.encoder.layers[i].self_attn, "attention_relaxation"):
+        #         self.model.encoder.layers[i].self_attn.attention_relaxation = False
         self.task = task
 
         if len(self.hooks) == 0:
-            module_name = "self.model.encoder.layers"
+            if hasattr(self.model, "speech_encoder"):
+                module_name = "self.model.speech_encoder.encoder.layers"
+            else:
+                module_name = "self.model.encoder.layers"
             for module_id in range(len(eval(module_name))):
                 self.add_hook(
                     f"{module_name}[{module_id}]",
                     lambda input, output: input[0].transpose(0, 1),
                 )
-            self.add_hook("self.model.encoder", lambda input, output: output[0])
+            if hasattr(self.model, "speech_encoder"):
+                self.add_hook("self.model.speech_encoder.encoder", lambda input, output: output[0])
+            else:
+                self.add_hook("self.model.encoder", lambda input, output: output[0])
+
+            if hasattr(self.model, "shared_encoder"):
+                module_name = "self.model.shared_encoder"
+                for module_id in range(len(eval(module_name))):
+                    self.add_hook(
+                        f"{module_name}[{module_id}]",
+                        lambda input, output: output[0].transpose(0, 1),
+                    )
+
+            if hasattr(self.model, "decoder"):
+                module_name = "self.model.decoder"
+                if hasattr(self.model.decoder, "layers"):
+                    module_name = "self.model.decoder.layers"
+                for module_id in range(len(eval(module_name))):
+                    self.add_hook(
+                        f"{module_name}[{module_id}]",
+                        lambda input, output: output[0].transpose(0, 1),
+                    )
 
             def postprocess(xs):
                 names, hiddens = zip(*xs)
@@ -62,6 +93,9 @@ class UpstreamExpert(UpstreamBase):
             self.hook_postprocess = postprocess
 
     def get_downsample_rates(self, key: str) -> int:
+        if hasattr(self.model, "feature_stride"):
+            print(f"The downsample rate of model is {self.model.feature_stride}")
+            return self.model.feature_stride
         return 320
 
     def forward(self, wavs):
@@ -76,7 +110,7 @@ class UpstreamExpert(UpstreamBase):
         )
         padded_wav = pad_sequence(wavs, batch_first=True)
 
-        features, feat_padding_mask = self.model.extract_features(
+        res = self.model.extract_features(
             padded_wav,
             padding_mask=wav_padding_mask,
             mask=None,

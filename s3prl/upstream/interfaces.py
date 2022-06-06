@@ -230,6 +230,11 @@ class Featurizer(nn.Module):
             " following options: --upstream_trainable --upstream_feature_selection last_hidden_state."
             " Or: -f -s last_hidden_state"
         )
+        # remove padding frame for data2vec encoder
+        if feature[0].shape[1] > feature[-1].shape[1]:
+            shape_diff = feature[0].shape[1] - feature[-1].shape[1]
+            assert shape_diff < 2
+            feature = [f[:, :-shape_diff] if i < len(feature) - 1 else f for i, f in enumerate(feature)]
         stacked_feature = torch.stack(feature, dim=0)
 
         if self.normalize:

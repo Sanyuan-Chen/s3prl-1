@@ -20,7 +20,7 @@ if [ ! -d "$voxceleb1" ]; then
 fi
 
 echo "Start testing ckpts..."
-for state_name in 20000 40000 60000 80000 100000 120000 140000 160000 180000 200000;
+for state_name in 20000 40000 60000 80000 100000 120000 140000 160000 180000 200000 10000 30000 50000 70000 90000 110000 130000 150000 170000 190000;
 do
     ckpt_path="$expdir/states-$state_name.ckpt"
     echo "Testing $ckpt_path"
@@ -31,7 +31,7 @@ do
     log_dir="$expdir/states-$state_name"
     if [ ! -d "$log_dir" ] || [ "$(cat "$log_dir"/log.txt | grep "test-EER" | wc -l)" -lt 1 ] || [ ! -f $log_dir/test_predict.txt ]; then
         mkdir -p $log_dir
-        override=args.expdir=${log_dir},,config.downstream_expert.datarc.file_path=${voxceleb1}
+        override=args.expdir=${log_dir},,config.downstream_expert.datarc.file_path=${voxceleb1},,config.downstream_expert.datarc.eval_batch_size=1
         python3 run_downstream.py -m evaluate -e $ckpt_path -o $override > $log_dir/log.txt
     fi
 done

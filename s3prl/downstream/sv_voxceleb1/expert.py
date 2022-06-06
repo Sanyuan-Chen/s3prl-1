@@ -12,6 +12,7 @@
 ###############
 import os
 import math
+import time
 import torch
 import random
 import pathlib
@@ -258,12 +259,12 @@ class DownstreamExpert(nn.Module):
         if mode == 'train':
             loss = torch.FloatTensor(records['loss']).mean().item()
             logger.add_scalar(f'sv-voxceleb1/{mode}-loss', loss, global_step=global_step)
-            print(f'sv-voxceleb1/{mode}-loss: {loss}')
+            print(f'{time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())} sv-voxceleb1/{mode}-loss: {loss}')
 
         elif mode in ['dev', 'test']:
             eer, *others = self.eval_metric(np.array(records['labels']), np.array(records['scores']))
             logger.add_scalar(f'sv-voxceleb1/{mode}-EER', eer, global_step=global_step)
-            print(f'sv-voxceleb1/{mode}-EER: {eer}')
+            print(f'{time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())} sv-voxceleb1/{mode}-EER: {eer}')
 
             if eer < self.best_score and mode == 'dev':
                 self.best_score = torch.ones(1) * eer

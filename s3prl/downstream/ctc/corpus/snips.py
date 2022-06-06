@@ -1,6 +1,7 @@
 from tqdm import tqdm, trange
 from pathlib import Path
-from os.path import join, getsize
+from os.path import join, getsize, exists
+import json
 from joblib import Parallel, delayed
 from torch.utils.data import Dataset
 
@@ -13,7 +14,7 @@ class SnipsDataset(Dataset):
         self.speaker_list = kwargs[f'{split}_speakers'] if type(split) == str else kwargs[f'{split[0]}_speakers']
 
         # Load transcription
-        transcripts_file = open(join(self.path, 'all.iob.snips.txt' if '-slot' in tokenizer.token_type else 'all-trans.txt')).readlines()
+        transcripts_file = open(join(self.path, 'all.iob.snips.txt' if '-slot' in tokenizer.token_type else 'all-trans.txt'), encoding="utf-8").readlines()
         transcripts = {}
         for line in transcripts_file:
             line = line.strip().split(' ')
@@ -24,7 +25,16 @@ class SnipsDataset(Dataset):
         # List all wave files
         file_list = []
         for s in split:
-            split_list = list(Path(join(path, s)).rglob("*.wav"))
+            cache_path = f"{join(path, s)}.split_list_cache"
+            if exists(cache_path):
+                split_list = json.load(open(cache_path, 'r'))
+                split_list = [Path(i) for i in split_list]
+                print(f"loaded split_list from {cache_path}")
+            else:
+                split_list = list(Path(join(path, s)).rglob("*.wav"))
+                split_list_tmp = [str(i) for i in split_list]
+                json.dump(split_list_tmp, open(cache_path, 'w'))
+                print(f"save split_list to {cache_path}")
             #for spk in self.speaker_list:
             #    print('- '+spk)
             #    for wav_file in tmp_split_list:
@@ -52,7 +62,9 @@ class SnipsDataset(Dataset):
         #    delayed(read_text)(str(f)) for f in file_list)
         #text = Parallel(n_jobs=-1)(delayed(tokenizer.encode)(txt) for txt in text)
         text = [transcripts[str(f).split('.wav', 1)[0].split('/')[-1]] for f in file_list]
-        text = [tokenizer.encode(txt) for txt in tqdm(text, desc='tokenizing')]
+        print('tokenizing')
+        text = [tokenizer.encode(txt) for txt in text]
+        # text = [tokenizer.encode(txt) for txt in tqdm(text, desc='tokenizing')]
 
         # Sort dataset by text length
         #file_len = Parallel(n_jobs=num_workers)(delayed(getsize)(f) for f in file_list)

@@ -29,9 +29,9 @@ downstream_expert:
     num_workers: 4
     train_batchsize: 8
     eval_batchsize: 1
-    train_dir: ./downstream/separation_stft/datasets/Libri2Mix/wav16k/min/train-100
-    dev_dir: ./downstream/separation_stft/datasets/Libri2Mix/wav16k/min/dev_1000
-    test_dir: ./downstream/separation_stft/datasets/Libri2Mix/wav16k/min/test
+    train_dir: /datablob/users/v-sanych/s3prl_data/separation_stft/datasets/Libri2Mix/wav16k/min/train-100
+    dev_dir: /datablob/users/v-sanych/s3prl_data/separation_stft/datasets/Libri2Mix/wav16k/min/dev_1000
+    test_dir: /datablob/users/v-sanych/s3prl_data/separation_stft/datasets/Libri2Mix/wav16k/min/test
   
   modelrc: 
     model: SepRNN
